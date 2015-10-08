@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< 0eccd7a919d05221eae7c2b6f55fbaaa9ca0fd4e
 guid: 423cb9dd428cb674d8705b40f4a1516b
 folderAsset: yes
 timeCreated: 1444322434
+=======
+guid: ada601a1cb7310649a1721f8d8c5fc26
+folderAsset: yes
+timeCreated: 1444322521
+>>>>>>> Add some material
 licenseType: Free
 DefaultImporter:
   userData: 

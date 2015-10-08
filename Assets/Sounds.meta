@@ -1,13 +1,24 @@
 fileFormatVersion: 2
+<<<<<<< d2e539d0c7f53e896dc3489348661c5d3f47f485
 <<<<<<< 7bdbe18be9bfec6c01316efdefa206df4db5b870
+=======
+<<<<<<< 0eccd7a919d05221eae7c2b6f55fbaaa9ca0fd4e
+>>>>>>> Add some material
 guid: b232e47a1da393e41a318ff685352d13
 folderAsset: yes
 timeCreated: 1444322434
 =======
+<<<<<<< d2e539d0c7f53e896dc3489348661c5d3f47f485
 guid: 2072c8ff6d61f7d47bd013ddb42cbe31
 folderAsset: yes
 timeCreated: 1444329718
 >>>>>>> Boule de feu v0.7
+=======
+guid: 39f2b12628c692a4f962e925183518b2
+folderAsset: yes
+timeCreated: 1444322521
+>>>>>>> Add some material
+>>>>>>> Add some material
 licenseType: Free
 DefaultImporter:
   userData: 
