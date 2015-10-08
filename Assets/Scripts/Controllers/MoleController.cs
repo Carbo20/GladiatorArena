@@ -5,6 +5,7 @@ public class MoleController : MonoBehaviour {
 
     private Vector2 direction;
     private float speed;
+    
 
 	// Use this for initialization
 	void Start () {
@@ -14,7 +15,8 @@ public class MoleController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        Move();
+        if(CanMove())
+            Move();
 
 	}
 
@@ -28,6 +30,11 @@ public class MoleController : MonoBehaviour {
 
         dir *= Time.deltaTime;
         transform.Translate(dir * speed);
+    }
+
+    private bool CanMove()
+    {
+        return true;
     }
 
     public void OnGUI()
