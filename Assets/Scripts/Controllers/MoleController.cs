@@ -36,9 +36,4 @@ public class MoleController : MonoBehaviour {
     {
         return true;
     }
-
-    public void OnGUI()
-    {
-        GUI.TextArea(new Rect(5, 5, 120, 20), Input.acceleration.ToString());
-    }
 }
