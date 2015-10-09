@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< 7bdbe18be9bfec6c01316efdefa206df4db5b870
 guid: dfd7abebc464f9c4ebcafad187e745bb
 folderAsset: yes
 timeCreated: 1444322434
+=======
+guid: 782a61b584b2032479850094dc2c1c28
+folderAsset: yes
+timeCreated: 1444329718
+>>>>>>> Boule de feu v0.7
 licenseType: Free
 DefaultImporter:
   userData: 
