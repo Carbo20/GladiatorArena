@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Diagnostics;
+using System.Threading;
 
 public class ArenaManager : MonoBehaviour
 {
@@ -15,20 +16,18 @@ public class ArenaManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Stopwatch watch = Stopwatch.StartNew();
-        buildArena(10, 10);
-        watch.Stop();
-        UnityEngine.Debug.Log(watch.ElapsedMilliseconds);
+        BuildArena(10, 10);
     }
 
     // Update is called once per frame
     void Update()
     {
 
+        PieceDestruction(GameObject.FindGameObjectWithTag("ArenaPiece"));
     }
 
 
-    private void buildArena(int height, int width)
+    private void BuildArena(int height, int width)
     {
         arenaMap = new int [height,width];
 
@@ -36,28 +35,42 @@ public class ArenaManager : MonoBehaviour
         {
             for(int j = 0;j < width; j++)
             {
-                GameObject Piece;
+                GameObject piece;
                 Vector3 pos;
                 if (i == 0 || i == height-1 || j == 0 || j == width-1)
                 {
-                    Piece = Instantiate(Resources.Load("Prefabs/ArenaPiece")) as GameObject;
+                    piece = Instantiate(Resources.Load("Prefabs/ArenaPiece")) as GameObject;
                     pos = new Vector3(-10 + 2 * i, 0, -10 + 2 * j);
                 }
                 else
                 {
-                    Piece = Instantiate(Resources.Load("Prefabs/ArenaFlatPiece")) as GameObject;
+                    piece = Instantiate(Resources.Load("Prefabs/ArenaFlatPiece")) as GameObject;
                     pos = new Vector3(-10 + 2 * i, 1, -10 + 2 * j);
                 }
-                Piece.transform.position = pos;
+                piece.transform.position = pos;
                 arenaMap[i,j] = 1;
 
             }
         }
     }
     
-    private void arenaDestruction()
+    private void PieceDestruction(GameObject piece)
     {
+        float time = 0f;
+        float speed = 1f;
 
+        for (float i = 0f; i < 6f; i += Time.deltaTime)
+        {
+            time += Time.deltaTime;
+            UnityEngine.Debug.Log(i);
+            if(time > speed)
+            {
+                Vector3 pos = piece.transform.position;
+                Vector3 newPos = new Vector3(pos.x, pos.y - 0.2f, pos.z);
+                piece.transform.position = newPos;
+                time = 0;
+            }
+        }
     }
 
 
