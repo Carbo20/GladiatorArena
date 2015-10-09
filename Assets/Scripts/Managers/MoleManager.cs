@@ -6,6 +6,7 @@ public class MoleManager : MonoBehaviour {
     private int life;
     private Vector3 initPosition;
     private int playerID;
+    private float timeAlive;
 
     public int PlayerID
     {
@@ -15,12 +16,13 @@ public class MoleManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        timeAlive = 0;
         Repop();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+        timeAlive += Time.deltaTime;
 	}
 
     public void SetLife(int value)
@@ -45,6 +47,7 @@ public class MoleManager : MonoBehaviour {
 
     private void Death()
     {
+        PlayerPrefs.SetFloat("timeAlive" + playerID, timeAlive);
         Destroy(gameObject);
     }
 
