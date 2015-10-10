@@ -7,6 +7,13 @@ public class MoleManager : MonoBehaviour {
     private Vector3 initPosition;
     private int playerID;
     private float timeAlive;
+    private string name;
+
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
 
     public int PlayerID
     {
@@ -19,7 +26,8 @@ public class MoleManager : MonoBehaviour {
         timeAlive = 0;
         Repop();
 	}
-	
+
+
 	// Update is called once per frame
 	void Update () {
         timeAlive += Time.deltaTime;

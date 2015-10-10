@@ -14,7 +14,7 @@ public class GameParameterManager : MonoBehaviour {
     private int timeID;
     private List<float> times;
     private int nbTimeOption;
-    private string[] timeTxts = {"∞", "30 sec", "1 min", "2 min"};
+    private string[] timeTxts = {"∞", "30s", "1min", "2min", "5min"};
 
     private Text playerText, lifeText, timeText;
 
@@ -25,13 +25,15 @@ public class GameParameterManager : MonoBehaviour {
         times.Add(30);
         times.Add(60);
         times.Add(120);
+        times.Add(300);
 
-        nbLife = 1;
+        nbPlayersMax = 4;
         nbLifeMax = 5;
-        timeID = 0;
-        nbTimeOption = 3;
-        nbPlayers = 2;
-        nbPlayersMax = 6;
+        nbTimeOption = 4;
+
+        nbPlayers = PlayerPrefs.GetInt("nbPlayers", 2);
+        nbLife = PlayerPrefs.GetInt("lifeAllowed", 1);
+        timeID = times.IndexOf(PlayerPrefs.GetFloat("timeOfGame", -1));
 
         playerText = GameObject.Find("NbPlayerSelecter/ValueText").GetComponent<Text>();
         lifeText = GameObject.Find("LifeSelecter/ValueText").GetComponent<Text>();
