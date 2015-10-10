@@ -35,6 +35,7 @@ public class Spell : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        SpellExplosionSound = Resources.Load("Audio/FireExplosion1") as AudioSource;
         myTransform = transform;
     }
 	
