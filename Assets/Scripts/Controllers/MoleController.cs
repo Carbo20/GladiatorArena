@@ -44,14 +44,6 @@ public class MoleController : MonoBehaviour {
     }
 
     /// <summary>
-    ///     Push the mole from an explosion
-    /// </summary>
-    private void Pushed(Vector3 pushDirection, float pushForce)
-    {
-
-    }
-
-    /// <summary>
     /// Deal with th input "swipe" to launch a spell
     /// </summary>
     private void Swipe()
@@ -76,8 +68,6 @@ public class MoleController : MonoBehaviour {
                         //Debug.Log("   && gestureDist  " + gestureDist + "   > minSwipeDist  " + minSwipeDist);
                         if (gestureDist > minSwipeDist)
                         {
-                            Vector2 direction = touch.position - fingerStartPos;
-                            Vector2 swipeType = Vector2.zero;
                             spell = spellPrefab.GetComponent<Spell>();
                             spell.direction.x = (touch.position - fingerStartPos).normalized.x;
                             //Debug.Log("(touch.position - fingerStartPos).normalized.x  " + (touch.position - fingerStartPos).normalized.x);
@@ -85,7 +75,7 @@ public class MoleController : MonoBehaviour {
                             spell.direction.y = 0;
                             spell.direction.z = (touch.position - fingerStartPos).normalized.y;
                             //Debug.DrawLine(transform.position, transform.position + spell.direction * 10, Color.red, Mathf.Infinity);
-                            Instantiate(spellPrefab, transform.position + spell.direction, transform.rotation);
+                            Instantiate(spellPrefab, transform.position + spell.direction*2, transform.rotation);
                         }
                         break;
                 }

@@ -24,19 +24,16 @@ public class Spell : MonoBehaviour {
     /// </summary>
     public Vector3 direction;
     /// <summary>
-    /// Sound played when the spell explode
-    /// </summary>
-    public AudioSource SpellExplosionSound;
-    /// <summary>
     ///     used to store my transform to avoid any unecessary lookup. Saves performance.
     /// </summary>
     public Transform myTransform;
 
+    private GameObject prefabExplosion;
 
     // Use this for initialization
     void Start () {
-        SpellExplosionSound = Resources.Load("Audio/FireExplosion1") as AudioSource;
         myTransform = transform;
+        prefabExplosion = Resources.Load("Prefabs/ExplosionParticles") as GameObject;
     }
 	
 	// Update is called once per frame
@@ -74,9 +71,7 @@ public class Spell : MonoBehaviour {
     /// </summary>
     public void explode()
     {
-        if (SpellExplosionSound != null)
-            SpellExplosionSound.Play();
-        
+        Instantiate(prefabExplosion, myTransform.position, myTransform.rotation);
         Destroy(this.gameObject);
     }
 }
