@@ -34,7 +34,6 @@ public class MoleController : MonoBehaviour {
         dir.z = Input.acceleration.y;
         /* if (dir.sqrMagnitude > 1)
              dir.Normalize();*/
-
         dir *= Time.deltaTime;
         transform.Translate(dir * speed);
     }
