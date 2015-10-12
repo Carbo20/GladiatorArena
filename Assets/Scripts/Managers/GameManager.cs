@@ -7,7 +7,7 @@ using System;
 public class GameManager : MonoBehaviour {
 
     private int nbPlayers;
-    private int playerID;
+    public int playerID;
     private int lifeAllowed;
     private float timeElapsed;
     private float timeOfGame;

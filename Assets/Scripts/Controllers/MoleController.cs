@@ -11,20 +11,57 @@ public class MoleController : MonoBehaviour {
     /// used for the swipe to remember where it started
     /// </summary>
     private Vector2 fingerStartPos = Vector2.zero;
+    private bool isShielded;
+    public float shieldDuration;
+    private float shieldRemainingDuration;
+    private float shieldCooldown;
+    private float shieldRemainingCooldown;
+    private Material mNoShield;
+    private Material mShield;
+    public float spellCooldown;
+    private float spellRemainingCooldown;
+    private bool spellLaunched;
+    private float minSwipeDist;
+    private GameObject gameManager;
 
     // Use this for initialization
     void Start () {
+        minSwipeDist = 50.0f;
         speed = 10f;
+        shieldDuration = 0.5f;
+        shieldRemainingDuration = 0;
+        shieldCooldown = 3f;
+        spellCooldown = 0.5f;
+        spellRemainingCooldown = 0;
+        isShielded = false;
+        spellLaunched = false;
         spellPrefab = Resources.Load("Prefabs/Spell") as GameObject;
+        mShield = Resources.Load("Materials/Shield") as Material;
+        mNoShield = GetComponent<MeshRenderer>().material;
+        gameManager = GameObject.Find("GameManager");
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-        if(CanMove())
+        if (CanMove())
             Move();
 
-        Swipe();
+        if (shieldRemainingDuration > 0)
+            shieldRemainingDuration -= Time.deltaTime;
+        else
+        {
+            isShielded = false;
+            GetComponent<MeshRenderer>().material = mNoShield;
+        }
+        
+        if (CanSpell())
+            Spell();
+
+        if (!spellLaunched && CanShield())
+            Shield();
+
+        spellLaunched = false;
     }
 
     private void Move()
@@ -43,12 +80,70 @@ public class MoleController : MonoBehaviour {
         return true;
     }
 
+    private bool CanSpell()
+    {
+        if (spellRemainingCooldown > 0)
+        {
+            spellRemainingCooldown -= Time.deltaTime;
+            return false; 
+        }
+
+        return true;
+    }
+
+    private bool CanShield()
+    {
+        if (shieldRemainingCooldown > 0)
+        {
+            shieldRemainingCooldown -= Time.deltaTime;
+            return false;
+        }
+
+        return true;
+    }
+
+    private void Shield()
+    {
+        if (Input.touchCount > 0)
+        {
+            foreach (Touch touch in Input.touches)
+            {
+                switch (touch.phase)
+                {
+                    case TouchPhase.Began:
+                        /* this is a new touch */
+                        fingerStartPos = touch.position;
+                        break;
+
+                    case TouchPhase.Ended:
+                        float gestureDist = (touch.position - fingerStartPos).magnitude;
+
+                        if (gestureDist < minSwipeDist)
+                        {
+                            RaycastHit hit;
+                            Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+
+                            if (Physics.Raycast(ray, out hit) && hit.transform.gameObject.GetComponent<MoleManager>() != null && hit.transform.gameObject.GetComponent<MoleManager>().PlayerID == gameManager.GetComponent<GameManager>().playerID)
+                            {
+                                isShielded = true;
+                                shieldRemainingDuration = shieldDuration;
+                                shieldRemainingCooldown = shieldCooldown;
+                                mNoShield = GetComponent<MeshRenderer>().material;
+                                GetComponent<MeshRenderer>().material = mShield;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
     /// <summary>
     /// Deal with th input "swipe" to launch a spell
     /// </summary>
-    private void Swipe()
+    private void Spell()
     {
-        float minSwipeDist = 0.0f;
+
 
         if (Input.touchCount > 0)
         {
@@ -59,28 +154,23 @@ public class MoleController : MonoBehaviour {
                     case TouchPhase.Began:
                         /* this is a new touch */
                         fingerStartPos = touch.position;
-                        //Debug.Log("touch.position "  + touch.position + " fingerStartPos  " + fingerStartPos);
                         break;
 
                     case TouchPhase.Ended:
-                        //Debug.Log("touch.position " + touch.position + " fingerStartPos  " + fingerStartPos);
                         float gestureDist = (touch.position - fingerStartPos).magnitude;
-                        //Debug.Log("   && gestureDist  " + gestureDist + "   > minSwipeDist  " + minSwipeDist);
                         if (gestureDist > minSwipeDist)
                         {
                             spell = spellPrefab.GetComponent<Spell>();
                             spell.direction.x = (touch.position - fingerStartPos).normalized.x;
-                            //Debug.Log("(touch.position - fingerStartPos).normalized.x  " + (touch.position - fingerStartPos).normalized.x);
-                            //Debug.Log("touch.position  " + touch.position + " fingerStartPos  " + fingerStartPos);
                             spell.direction.y = 0;
                             spell.direction.z = (touch.position - fingerStartPos).normalized.y;
-                            //Debug.DrawLine(transform.position, transform.position + spell.direction * 10, Color.red, Mathf.Infinity);
                             Instantiate(spellPrefab, transform.position + spell.direction*2, transform.rotation);
+                            spellRemainingCooldown = spellCooldown;
+                            spellLaunched = true;
                         }
                         break;
                 }
             }
         }
-
     }
 }
