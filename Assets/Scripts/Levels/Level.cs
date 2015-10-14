@@ -12,6 +12,12 @@ public abstract class Level {
     public abstract void InitLevel();
     public abstract void SetFallPlanification();
 
+    public Level()
+    {
+        InitLevel();
+        SetFallPlanification();
+    }
+
     public void SetDimension(int _width, int _height)
     {
         width = _width;
