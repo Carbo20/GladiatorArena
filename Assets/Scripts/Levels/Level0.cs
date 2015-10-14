@@ -4,11 +4,7 @@ using System.Collections.Generic;
 
 public class Level0 : Level {
 
-    public Level0()
-    {
-        InitLevel();
-        SetFallPlanification();
-    }
+    
 
     public override void InitLevel()
     {
