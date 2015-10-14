@@ -1,74 +1,116 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Diagnostics;
-using System.Threading;
+using System.Collections.Generic;
 
 public class ArenaManager : MonoBehaviour
 {
-
-    GameObject lava;
-    GameObject arena;
-
-    MeshFilter arenaMesh;
-
     int[,] arenaMap;
+    Level level;
+    GameObject[,] pieces;
 
+    float elapsedTime;
+    int currentFallStep;
     // Use this for initialization
     void Start()
     {
-        BuildArena(10, 10);
+        level = new Level0();
+        pieces = new GameObject[level.width, level.height];
+        BuildArena();
+        elapsedTime = 0;
+        currentFallStep = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        elapsedTime += Time.deltaTime;
+        if (currentFallStep < level.GetFallStepCount() &&  level.GetFallTime(currentFallStep) <= elapsedTime)
+        {
 
-        PieceDestruction(GameObject.FindGameObjectWithTag("ArenaPiece"));
+            Debug.Log("Fall n°" + currentFallStep + " triggered at " + elapsedTime + "(" + level.GetFallTime(currentFallStep) + ") " + level.GetFallCoordinates(currentFallStep).Count + " pieces fall") ; 
+            TriggerFall(currentFallStep);
+            currentFallStep++;
+        }
     }
 
-
-    private void BuildArena(int height, int width)
+    private void TriggerFall(int step)
     {
-        arenaMap = new int [height,width];
-
-        for(int i = 0;i < height; i++)
+        List<Vector2> fallCoord = level.GetFallCoordinates(step);
+        for (int i = 0; i < fallCoord.Count; i++)
         {
-            for(int j = 0;j < width; j++)
+
+            if (pieces[(int)fallCoord[i].x, (int)fallCoord[i].y].GetComponent<ArenaPieceScript>() == null)
+            {
+                Vector3 p = pieces[(int)fallCoord[i].x, (int)fallCoord[i].y].transform.position;
+                p.y = 0;
+                Destroy(pieces[(int)fallCoord[i].x, (int)fallCoord[i].y].gameObject);
+
+                pieces[(int)fallCoord[i].x, (int)fallCoord[i].y] = Instantiate(Resources.Load("Prefabs/ArenaPiece")) as GameObject;
+                pieces[(int)fallCoord[i].x, (int)fallCoord[i].y].transform.position = p;
+
+                
+
+            }
+
+            for (int j = -1; j <= 1; j++)
+                for (int k = -1; k <= 1; k++)
+                {
+                    if (Mathf.Abs(j) != Mathf.Abs(k))
+                    {
+                        
+                        if (
+                            (int)fallCoord[i].x + j < level.height &&
+                            (int)fallCoord[i].x + j >= 0 &&
+                            (int)fallCoord[i].y + k < level.width &&
+                            (int)fallCoord[i].y + k >= 0 &&
+                            pieces[(int)fallCoord[i].x + j, (int)fallCoord[i].y+ k] != null && 
+                            pieces[(int)fallCoord[i].x + j, (int)fallCoord[i].y+ k].GetComponent<ArenaPieceScript>() == null
+                            )
+                        {
+                            Vector3 p = pieces[(int)fallCoord[i].x + j, (int)fallCoord[i].y + k].transform.position;
+                            p.y = 0;
+                            Destroy(pieces[(int)fallCoord[i].x + j, (int)fallCoord[i].y + k].gameObject);
+
+                            pieces[(int)fallCoord[i].x + j, (int)fallCoord[i].y + k] = Instantiate(Resources.Load("Prefabs/ArenaPiece")) as GameObject;
+                            pieces[(int)fallCoord[i].x + j, (int)fallCoord[i].y + k].transform.position = p;
+
+
+
+                        }
+                    }
+                }
+        
+            pieces[(int)fallCoord[i].x, (int)fallCoord[i].y].GetComponent<MeshRenderer>().material.color = Color.yellow;
+            //pieces[(int)fallCoord[i].x, (int)fallCoord[i].y].GetComponent<BoxCollider>().enabled = false;
+            pieces[(int)fallCoord[i].x, (int)fallCoord[i].y].GetComponent<ArenaPieceScript>().TriggerFall();
+
+        }
+    }
+
+    private void BuildArena()
+    {
+       
+        for (int i = 0; i < level.height; i++)
+        {
+            for (int j = 0; j < level.width; j++)
             {
                 GameObject piece;
                 Vector3 pos;
-                if (i == 0 || i == height-1 || j == 0 || j == width-1)
+                if (level.GetHeight(i, j) == 0) continue;
+
+                if (i == 0 || i == level.height - 1 || j == 0 || j == level.width - 1 ||
+                    level.GetHeight(i-1, j) == 0 || level.GetHeight(i+1, j) == 0 || level.GetHeight(i, j-1) == 0 || level.GetHeight(i, j+1) == 0)
                 {
                     piece = Instantiate(Resources.Load("Prefabs/ArenaPiece")) as GameObject;
-                    pos = new Vector3(-10 + 2 * i, 0, -10 + 2 * j);
+                    pos = new Vector3(-level.height + 2 * i, 0, -level.width + 2 * j);
                 }
                 else
                 {
                     piece = Instantiate(Resources.Load("Prefabs/ArenaFlatPiece")) as GameObject;
-                    pos = new Vector3(-10 + 2 * i, 1, -10 + 2 * j);
+                    pos = new Vector3(-level.height + 2 * i, 1, -level.width + 2 * j);
                 }
                 piece.transform.position = pos;
-                arenaMap[i,j] = 1;
-
-            }
-        }
-    }
-    
-    private void PieceDestruction(GameObject piece)
-    {
-        float time = 0f;
-        float speed = 1f;
-
-        for (float i = 0f; i < 6f; i += Time.deltaTime)
-        {
-            time += Time.deltaTime;
-            UnityEngine.Debug.Log(i);
-            if(time > speed)
-            {
-                Vector3 pos = piece.transform.position;
-                Vector3 newPos = new Vector3(pos.x, pos.y - 0.2f, pos.z);
-                piece.transform.position = newPos;
-                time = 0;
+                pieces[i, j] = piece;
             }
         }
     }

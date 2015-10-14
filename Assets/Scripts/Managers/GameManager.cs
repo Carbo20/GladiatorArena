@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour {
             {
                 go.AddComponent<MoleController>();
             }
-            go.GetComponent<MoleManager>().SetInitPosition(new Vector3(i *1.5f, 1, i*2f)); // TODO: position de depart dans le terrain
+            go.GetComponent<MoleManager>().SetInitPosition(new Vector3(i *1.5f, 2, i*2f)); // TODO: position de depart dans le terrain
             go.GetComponent<MoleManager>().SetLife(lifeAllowed);
             go.GetComponent<MoleManager>().PlayerID = i;
             go.GetComponent<MoleManager>().Name ="Mole " + i;

@@ -108,17 +108,14 @@ public class MoleManager : MonoBehaviour
         transform.Translate(dir * pushForce * Time.deltaTime);
     }
 
-    public void OnCollisionEnter(Collision collision)
+
+    public void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.tag == "Lava")
         {
             LifeDown();
         }
-    }
-
-    public void OnTriggerEnter(Collider collision)
-    {
-        if (collision.gameObject.tag == "Spell")
+        else if (collision.gameObject.tag == "Spell")
         {
             // envoyer l'explosion de la boule de feu
             Spell spell;
