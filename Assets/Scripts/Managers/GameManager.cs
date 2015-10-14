@@ -93,8 +93,9 @@ public class GameManager : MonoBehaviour {
     {
         GameObject go = Instantiate(Resources.Load("Prefabs/GameOverPanel")) as GameObject;
         go.transform.parent = canvas.transform;
-        go.GetComponent<RectTransform>().offsetMax = new Vector2(-31, -206);
-        go.GetComponent<RectTransform>().offsetMin = new Vector2(31, 248);
+        go.GetComponent<RectTransform>().offsetMax = new Vector2(-20, -125);
+        go.GetComponent<RectTransform>().offsetMin = new Vector2(20, 182);
+        go.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
 
         if (mm.Length != 1)
         {
