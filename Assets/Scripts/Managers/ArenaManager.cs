@@ -118,6 +118,12 @@ public class ArenaManager : MonoBehaviour
                 pieces[i, j] = piece;
             }
         }
+
+        for (int i = 0; i < level.obstacles.Count; i++)
+        {
+            GameObject go =  Instantiate(level.obstacles[i]);
+            go.transform.position = level.obstaclesPositions[i];
+        }
     }
 
 

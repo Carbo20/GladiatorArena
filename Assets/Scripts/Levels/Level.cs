@@ -10,10 +10,15 @@ public abstract class Level {
     public List<List<Vector2>> fallCoord;
     public List<float> fallTimes;
     public List<List<Vector3>> initialPositions;
+    public List<GameObject> obstacles;
+    public List<Vector3> obstaclesPositions;
 
     public abstract void InitLevel();
     public abstract void SetFallPlanification();
     public abstract void SetInitialPositions();
+    public abstract void SetObstacles();
+
+    public GameObject Bumper;
 
     public Level()
     {
@@ -25,6 +30,16 @@ public abstract class Level {
             initialPositions.Add(new List<Vector3>());
         }
         SetInitialPositions();
+
+        InitObstacles();
+        SetObstacles();
+    }
+
+    public void InitObstacles()
+    {
+        obstacles = new List<GameObject>();
+        obstaclesPositions = new List<Vector3>();
+        Bumper = Resources.Load<GameObject>("Prefabs/Bumper");
     }
 
     public void SetDimension(int _width, int _height)
@@ -37,6 +52,7 @@ public abstract class Level {
     {
         fallCoord = new List<List<Vector2>>();
         fallTimes = new List<float>();
+        
     }
 
     public int GetHeight(int x, int y)

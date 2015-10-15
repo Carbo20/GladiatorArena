@@ -135,5 +135,12 @@ public class MoleManager : MonoBehaviour
             pushForce = spell.Force;
             pushDirection = spell.direction;
         }
+        else if (collision.gameObject.tag == "Bumper")
+        {
+            isBeingPushed = true;
+            timeBeingPushed = 0;
+            pushDirection = transform.position - collision.gameObject.transform.position;
+            pushForce = 7; //force des bumpers
+        }
     }
 }

@@ -234,4 +234,24 @@ public class Level0 : Level {
         initialPositions[2].Add(new Vector3(-height + 2 * 5, 2, -width + 2 * 17));
 
     }
+
+    public override void SetObstacles()
+    {
+        //formule pour les positions en fonction de la heightMap
+        // x = -level.height + 2 * i y = 2, z =-level.width + 2 * j
+
+        //model creation bumper en (7,13)
+        obstacles.Add(Bumper);
+        obstaclesPositions.Add(new Vector3(-height + 2 * 7, obstacles[0].transform.position.y, -width + 2 * 13));
+
+        obstacles.Add(Bumper);
+        obstaclesPositions.Add(new Vector3(-height + 2 * 13, obstacles[0].transform.position.y, -width + 2 * 7));
+
+        obstacles.Add(Bumper);
+        obstaclesPositions.Add(new Vector3(-height + 2 * 7, obstacles[0].transform.position.y, -width + 2 * 7));
+
+        obstacles.Add(Bumper);
+        obstaclesPositions.Add(new Vector3(-height + 2 * 13, obstacles[0].transform.position.y, -width + 2 * 13));
+
+    }
 }

@@ -147,17 +147,10 @@ public class GameManager : MonoBehaviour {
     {
         MoleManager[] mm = GameObject.FindObjectsOfType<MoleManager>();
 
-        if (!gameOver && mm.Length == 1)
+        if ((!gameOver && (mm.Length == 1 || mm.Length == 0)) || (!gameOver && timeOfGame != -1 && timeElapsed >= timeOfGame))
         {
             updateGameOverPanel(mm);
             gameOver = true;
-        }
-
-        if (!gameOver && timeOfGame != -1 && timeElapsed >= timeOfGame)
-        {
-            updateGameOverPanel(mm);
-            gameOver = true;
-
         }
     }
 
