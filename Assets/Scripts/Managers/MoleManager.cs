@@ -42,7 +42,7 @@ public class MoleManager : MonoBehaviour
         SpellExplosionSound = Resources.Load("Audio/FireExplosion1") as AudioClip;
         if (SpellExplosionSound == null)
             Debug.Log("erreur son");
-        Repop();
+        transform.position = initPosition;
     }
 
 
@@ -88,12 +88,13 @@ public class MoleManager : MonoBehaviour
 
     private void Repop()
     {
-        transform.position = initPosition;
+        transform.position = new Vector3(0, 2, 0);
     }
 
     public void SetInitPosition(Vector3 position)
     {
         initPosition = position;
+        
     }
 
     /// <summary>

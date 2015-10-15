@@ -5,17 +5,24 @@ using System.Collections.Generic;
 public class ArenaManager : MonoBehaviour
 {
     int[,] arenaMap;
-    Level level;
+    public Level level;
     GameObject[,] pieces;
-
+    GameManager gameManager;
     float elapsedTime;
     int currentFallStep;
-    // Use this for initialization
-    void Start()
+
+    void Awake()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         level = new Level0();
         pieces = new GameObject[level.width, level.height];
         BuildArena();
+    }
+
+    // Use this for initialization
+    void Start()
+    {
         elapsedTime = 0;
         currentFallStep = 0;
     }
@@ -24,10 +31,8 @@ public class ArenaManager : MonoBehaviour
     void Update()
     {
         elapsedTime += Time.deltaTime;
-        if (currentFallStep < level.GetFallStepCount() &&  level.GetFallTime(currentFallStep) <= elapsedTime)
+        if (!gameManager.gameOver && currentFallStep < level.GetFallStepCount() &&  level.GetFallTime(currentFallStep) <= elapsedTime)
         {
-
-            Debug.Log("Fall n°" + currentFallStep + " triggered at " + elapsedTime + "(" + level.GetFallTime(currentFallStep) + ") " + level.GetFallCoordinates(currentFallStep).Count + " pieces fall") ; 
             TriggerFall(currentFallStep);
             currentFallStep++;
         }

@@ -7,6 +7,8 @@ public class MoleController : MonoBehaviour {
     private float speed;
     private GameObject spellPrefab;
     private Spell spell;
+
+
     /// <summary>
     /// used for the swipe to remember where it started
     /// </summary>
@@ -77,11 +79,14 @@ public class MoleController : MonoBehaviour {
 
     private bool CanMove()
     {
-        return true;
+        
+        return (!gameManager.GetComponent<GameManager>().gameOver);
     }
 
     private bool CanSpell()
     {
+        if (gameManager.GetComponent<GameManager>().gameOver) return false;
+
         if (spellRemainingCooldown > 0)
         {
             spellRemainingCooldown -= Time.deltaTime;
@@ -93,6 +98,7 @@ public class MoleController : MonoBehaviour {
 
     private bool CanShield()
     {
+        if (gameManager.GetComponent<GameManager>().gameOver) return false;
         if (shieldRemainingCooldown > 0)
         {
             shieldRemainingCooldown -= Time.deltaTime;

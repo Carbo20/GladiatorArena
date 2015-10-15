@@ -4,18 +4,27 @@ using System.Collections.Generic;
 
 public abstract class Level {
 
+    private int NB_PLAYER_COUNT__MODE = 3;
     public int width, height;
     public int[,] heightMap;
     public List<List<Vector2>> fallCoord;
     public List<float> fallTimes;
+    public List<List<Vector3>> initialPositions;
 
     public abstract void InitLevel();
     public abstract void SetFallPlanification();
+    public abstract void SetInitialPositions();
 
     public Level()
     {
         InitLevel();
         SetFallPlanification();
+        initialPositions = new List<List<Vector3>>(NB_PLAYER_COUNT__MODE);
+        for (int i = 0; i < NB_PLAYER_COUNT__MODE; i++)
+        {
+            initialPositions.Add(new List<Vector3>());
+        }
+        SetInitialPositions();
     }
 
     public void SetDimension(int _width, int _height)
@@ -50,4 +59,8 @@ public abstract class Level {
         return fallTimes.Count;
     }
 
+    public Vector3 GetInitalPosition(int nbPlayers, int playerId)
+    {
+        return initialPositions[nbPlayers - 2][playerId];
+    }
 }

@@ -12,12 +12,14 @@ public class GameManager : MonoBehaviour {
     private float timeElapsed;
     private float timeOfGame;
 
-    private bool gameOver;
+    public bool gameOver;
     private GameObject canvas;
 
     private Text timeTxt;
     private List<Color> colors;
     private List<string> names;
+
+    private Level level;
 
 	// Use this for initialization
 	void Start () {
@@ -30,6 +32,8 @@ public class GameManager : MonoBehaviour {
         gameOver = false;
         canvas = GameObject.Find("Canvas");
         timeTxt = GameObject.Find("TimeText").GetComponent<Text>();
+
+        level = GameObject.FindGameObjectWithTag("Arena").GetComponent<ArenaManager>().level;
 
         colors = new List<Color>();
         colors.Add(Color.red);
@@ -46,7 +50,8 @@ public class GameManager : MonoBehaviour {
             {
                 go.AddComponent<MoleController>();
             }
-            go.GetComponent<MoleManager>().SetInitPosition(new Vector3(i *1.5f, 2, i*2f)); // TODO: position de depart dans le terrain
+
+            go.GetComponent<MoleManager>().SetInitPosition(level.GetInitalPosition(nbPlayers, i));
             go.GetComponent<MoleManager>().SetLife(lifeAllowed);
             go.GetComponent<MoleManager>().PlayerID = i;
             go.GetComponent<MoleManager>().Name ="Mole " + i;

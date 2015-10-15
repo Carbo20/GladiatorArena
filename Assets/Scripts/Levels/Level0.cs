@@ -39,7 +39,7 @@ public class Level0 : Level {
     {
         InitFallVariables();
         /*step 0 */
-        fallTimes.Add(5);
+        fallTimes.Add(10);
         
         fallCoord.Add(new List<Vector2>());
         fallCoord[0].Add(new Vector2(1, 8));
@@ -98,7 +98,7 @@ public class Level0 : Level {
         fallCoord[0].Add(new Vector2(19, 12));
 
         /*step 1*/
-        fallTimes.Add(10);
+        fallTimes.Add(15);
         fallCoord.Add(new List<Vector2>());
         fallCoord[1].Add(new Vector2(8, 1));
         fallCoord[1].Add(new Vector2(9, 1));
@@ -152,7 +152,7 @@ public class Level0 : Level {
         fallCoord[1].Add(new Vector2(16, 16));
 
         /*step 2*/
-        fallTimes.Add(15);
+        fallTimes.Add(25);
         fallCoord.Add(new List<Vector2>());
         fallCoord[2].Add(new Vector2(10, 2));
         fallCoord[2].Add(new Vector2(8, 3));
@@ -213,4 +213,25 @@ public class Level0 : Level {
 
     }
 
+    public override void SetInitialPositions()
+    {
+        //formule pour les positions en fonction de la heightMap
+        // x = -level.height + 2 * i y = 2, z =-level.width + 2 * j
+
+        //position inititales pour 2 joueurs
+        initialPositions[0].Add(new Vector3(-height + 2 * 5, 2, -width + 2 * 4));
+        initialPositions[0].Add(new Vector3(-height + 2 * 16, 2, -width + 2 * 17));
+
+        //position inititales pour 3 joueurs
+        initialPositions[1].Add(new Vector3(-height + 2 * 5, 2, -width + 2 * 4));
+        initialPositions[1].Add(new Vector3(-height + 2 * 16, 2, -width + 2 * 17));
+        initialPositions[1].Add(new Vector3(-height + 2 * 16, 2, -width + 2 * 4));
+
+        //position inititales pour 4 joueurs
+        initialPositions[2].Add(new Vector3(-height + 2 * 5, 2, -width + 2 * 4));
+        initialPositions[2].Add(new Vector3(-height + 2 * 16, 2, -width + 2 * 17));
+        initialPositions[2].Add(new Vector3(-height + 2 * 16, 2, -width + 2 * 4));
+        initialPositions[2].Add(new Vector3(-height + 2 * 5, 2, -width + 2 * 17));
+
+    }
 }

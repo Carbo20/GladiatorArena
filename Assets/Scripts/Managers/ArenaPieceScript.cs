@@ -10,9 +10,11 @@ public class ArenaPieceScript : MonoBehaviour {
     public bool isThrilling, isFalling;
 
     private Vector3 pos;
+    private GameManager gameManager;
     
 	// Use this for initialization
 	void Start () {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         isThrilling = false;
         isFalling = false;
         pos = transform.position;
@@ -21,10 +23,12 @@ public class ArenaPieceScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (isThrilling)
+        if (!gameManager.gameOver &&  isThrilling)
             Thrill();
-        if (isFalling)
+        if (!gameManager.gameOver && isFalling)
             Fall();
+
+        
         if (GetComponent<MeshRenderer>().material.color == Color.yellow && !isThrilling && timeThrilling <= timeOfThrill)
         {
             TriggerFall();
