@@ -19,6 +19,7 @@ public abstract class Level {
     public abstract void SetObstacles();
 
     public GameObject Bumper;
+    public GameObject Barrel;
 
     public Level()
     {
@@ -40,6 +41,7 @@ public abstract class Level {
         obstacles = new List<GameObject>();
         obstaclesPositions = new List<Vector3>();
         Bumper = Resources.Load<GameObject>("Prefabs/Bumper");
+        Barrel = Resources.Load<GameObject>("Prefabs/Barrel");
     }
 
     public void SetDimension(int _width, int _height)

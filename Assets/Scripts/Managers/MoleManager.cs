@@ -139,8 +139,17 @@ public class MoleManager : MonoBehaviour
         {
             isBeingPushed = true;
             timeBeingPushed = 0;
-            pushDirection = transform.position - collision.gameObject.transform.position;
+            pushDirection = (transform.position - collision.gameObject.transform.position).normalized;
             pushForce = 7; //force des bumpers
         }
+    }
+
+    public void HitByBarrelForce(Vector3 barrelPos)
+    {
+        isBeingPushed = true;
+        timeBeingPushed = 0;
+        pushDirection = (transform.position - barrelPos).normalized;
+        
+        pushForce = (BarrelManager.range - (new Vector2(transform.position.x, transform.position.z) - new Vector2(barrelPos.x, barrelPos.z)).magnitude) * 3;
     }
 }

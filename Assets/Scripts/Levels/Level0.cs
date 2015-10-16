@@ -247,10 +247,10 @@ public class Level0 : Level {
         obstacles.Add(Bumper);
         obstaclesPositions.Add(new Vector3(-height + 2 * 13, obstacles[0].transform.position.y + 0.1f, -width + 2 * 7));
 
-        obstacles.Add(Bumper);
+        obstacles.Add(Barrel);
         obstaclesPositions.Add(new Vector3(-height + 2 * 7, obstacles[0].transform.position.y + 0.1f, -width + 2 * 7));
 
-        obstacles.Add(Bumper);
+        obstacles.Add(Barrel);
         obstaclesPositions.Add(new Vector3(-height + 2 * 13, obstacles[0].transform.position.y+0.1f, -width + 2 * 13));
 
     }
