@@ -242,16 +242,16 @@ public class Level0 : Level {
 
         //model creation bumper en (7,13)
         obstacles.Add(Bumper);
-        obstaclesPositions.Add(new Vector3(-height + 2 * 7, obstacles[0].transform.position.y, -width + 2 * 13));
+        obstaclesPositions.Add(new Vector3(-height + 2 * 7, obstacles[0].transform.position.y + 0.1f, -width + 2 * 13));
 
         obstacles.Add(Bumper);
-        obstaclesPositions.Add(new Vector3(-height + 2 * 13, obstacles[0].transform.position.y, -width + 2 * 7));
+        obstaclesPositions.Add(new Vector3(-height + 2 * 13, obstacles[0].transform.position.y + 0.1f, -width + 2 * 7));
 
         obstacles.Add(Bumper);
-        obstaclesPositions.Add(new Vector3(-height + 2 * 7, obstacles[0].transform.position.y, -width + 2 * 7));
+        obstaclesPositions.Add(new Vector3(-height + 2 * 7, obstacles[0].transform.position.y + 0.1f, -width + 2 * 7));
 
         obstacles.Add(Bumper);
-        obstaclesPositions.Add(new Vector3(-height + 2 * 13, obstacles[0].transform.position.y, -width + 2 * 13));
+        obstaclesPositions.Add(new Vector3(-height + 2 * 13, obstacles[0].transform.position.y+0.1f, -width + 2 * 13));
 
     }
 }
