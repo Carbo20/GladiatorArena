@@ -1,19 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
 using GooglePlayGames;
-using GooglePlayGames.BasicApi.Multiplayer;
+using GooglePlayGames.BasicApi;
+using UnityEngine.SocialPlatforms;
+using System;
 
-public class MultiplayerController {
+public class MultiplayerController
+{
 
-    private static MultiplayerController _instance = null;
+    public static MultiplayerController _instance = null;
 
-    private MultiplayerController()
+    public MultiplayerController()
     {
+        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+               /* // enables saving game progress.
+                .EnableSavedGames()
+                // registers a callback to handle game invitations received while the game is not running.
+                .WithInvitationDelegate(< callback method >)
+                // registers a callback for turn based match notifications received while the
+                // game is not running.
+                .WithMatchDelegate(< callback method >)*/
+                .Build();
+
+        PlayGamesPlatform.InitializeInstance(config);
+        //Debug mode
         PlayGamesPlatform.DebugLogEnabled = true;
+        
+        // Activate the Google Play Games platform
         PlayGamesPlatform.Activate();
+
+        SignInAndStartMPGame();
+
     }
 
-    public static MultiplayerController Instance
+   public static MultiplayerController Instance
     {
         get
         {
@@ -24,17 +44,18 @@ public class MultiplayerController {
             return _instance;
         }
     }
-
-
+    
+    // Authenticate localUser for multi network
     public void SignInAndStartMPGame()
     {
-        if (!PlayGamesPlatform.Instance.localUser.authenticated)
+        if (!Social.localUser.authenticated)
         {
-            PlayGamesPlatform.Instance.localUser.Authenticate((bool success) => {
+            Social.localUser.Authenticate((bool success) => {
                 if (success)
                 {
                     Debug.Log("We're signed in! Welcome " + PlayGamesPlatform.Instance.localUser.userName);
                     // We could start our game now
+                    Application.LoadLevel("DavidSceneWithNetwork");
                 }
                 else
                 {
@@ -48,4 +69,7 @@ public class MultiplayerController {
             // We could also start our game now
         }
     }
+
+
+
 }

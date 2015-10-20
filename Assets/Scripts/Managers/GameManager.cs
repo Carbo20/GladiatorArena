@@ -3,8 +3,11 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi.Multiplayer;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
+{
 
     private int nbPlayers;
     public int playerID;
@@ -20,9 +23,10 @@ public class GameManager : MonoBehaviour {
     private List<string> names;
 
     private Level level;
+    private RealTimeMultiplayerListener listener;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 	    nbPlayers = PlayerPrefs.GetInt("nbPlayers", 4);
         timeOfGame = PlayerPrefs.GetFloat("timeOfGame", -1);
         lifeAllowed = PlayerPrefs.GetInt("lifeAllowed", 3);
@@ -41,6 +45,13 @@ public class GameManager : MonoBehaviour {
         colors.Add(Color.green);
         colors.Add(Color.yellow);
         names = new List<string>();
+
+       
+       //listener = new MultiplayerController();
+        const int MinOpponents = 1, MaxOpponents = 2;//placeholder
+        const int GameVariant = 0;
+       // PlayGamesPlatform.Instance.RealTime.CreateQuickGame(MinOpponents, MaxOpponents,
+       //             GameVariant, this);
 
         /*create moles */
         for (int i = 0; i < nbPlayers; i++)
@@ -157,5 +168,40 @@ public class GameManager : MonoBehaviour {
     public void QuiButton()
     {
         Application.LoadLevel("GameParameterScene");
+    }
+
+    public void OnRoomSetupProgress(float percent)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnRoomConnected(bool success)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnLeftRoom()
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnParticipantLeft(Participant participant)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnPeersConnected(string[] participantIds)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnPeersDisconnected(string[] participantIds)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data)
+    {
+        throw new NotImplementedException();
     }
 }
