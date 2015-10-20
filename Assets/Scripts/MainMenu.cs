@@ -4,7 +4,7 @@ using System.Collections;
 public class MainMenu : MonoBehaviour
 {
 
-    public void Start ()
+    void Start ()
     {
         // Authenticate localUser for multi network
         MultiplayerController.Instance.SignInAndStartMPGame();
