@@ -3,20 +3,28 @@ using System.Collections;
 
 public class MainMenu : MonoBehaviour
 {
+    private float ready;
 
     void Start ()
     {
         // Authenticate localUser for multi network
-        MultiplayerController.Instance.SignInAndStartMPGame();
-
         
+        ready = 0;
+
     }
 
-/*TODO
-    public void goToOptions()
+    void Update()
     {
-        Application.LoadLevel("IAProgScene");
+        if (ready < 1f)
+            ready += Time.deltaTime;
+        else
+            MultiplayerController.Instance.SignInAndStartMPGame();
     }
-*/
+    /*TODO
+        public void goToOptions()
+        {
+            Application.LoadLevel("IAProgScene");
+        }
+    */
 
 }

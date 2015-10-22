@@ -29,7 +29,7 @@ public class MultiplayerController
         // Activate the Google Play Games platform
         PlayGamesPlatform.Activate();
 
-        SignInAndStartMPGame();
+       // SignInAndStartMPGame();
 
     }
 
@@ -55,6 +55,7 @@ public class MultiplayerController
                 {
                     Debug.Log("We're signed in! Welcome " + PlayGamesPlatform.Instance.localUser.userName);
                     // We could start our game now
+                    GUI.Box(new Rect(0, 0, 500, 200), "Debuggons");
                     Application.LoadLevel("DavidSceneWithNetwork");
                 }
                 else
