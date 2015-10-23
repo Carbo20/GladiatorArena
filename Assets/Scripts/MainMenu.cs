@@ -15,16 +15,15 @@ public class MainMenu : MonoBehaviour
 
     void Update()
     {
-        if (ready < 1f)
+        /*if (ready < 1f)
             ready += Time.deltaTime;
         else
-            MultiplayerController.Instance.SignInAndStartMPGame();
+            MultiplayerController.Instance.SignInAndStartMPGame();*/
     }
-    /*TODO
-        public void goToOptions()
-        {
-            Application.LoadLevel("IAProgScene");
-        }
-    */
+
+    public void MultiLauncher()
+    {
+        MultiplayerController.Instance.SignInAndStartMPGame();
+    }
 
 }
