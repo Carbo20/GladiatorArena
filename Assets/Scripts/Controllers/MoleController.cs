@@ -25,6 +25,7 @@ public class MoleController : MonoBehaviour {
     private bool spellLaunched;
     private float minSwipeDist;
     private GameObject gameManager;
+    private MoleManager moleManager;
 
     // Use this for initialization
     void Start () {
@@ -41,6 +42,7 @@ public class MoleController : MonoBehaviour {
         mShield = Resources.Load("Materials/Shield") as Material;
         mNoShield = GetComponent<MeshRenderer>().material;
         gameManager = GameObject.Find("GameManager");
+        moleManager = GetComponent<MoleManager>(); ;
     }
 	
 	// Update is called once per frame
@@ -54,6 +56,7 @@ public class MoleController : MonoBehaviour {
         else
         {
             isShielded = false;
+            moleManager.ShieldUpdate(isShielded);
             GetComponent<MeshRenderer>().material = mNoShield;
         }
         
@@ -132,6 +135,7 @@ public class MoleController : MonoBehaviour {
                             if (Physics.Raycast(ray, out hit) && hit.transform.gameObject.GetComponent<MoleManager>() != null && hit.transform.gameObject.GetComponent<MoleManager>().PlayerID == gameManager.GetComponent<GameManager>().playerID)
                             {
                                 isShielded = true;
+                                moleManager.ShieldUpdate(isShielded);
                                 shieldRemainingDuration = shieldDuration;
                                 shieldRemainingCooldown = shieldCooldown;
                                 mNoShield = GetComponent<MeshRenderer>().material;
@@ -149,8 +153,6 @@ public class MoleController : MonoBehaviour {
     /// </summary>
     private void Spell()
     {
-
-
         if (Input.touchCount > 0)
         {
             foreach (Touch touch in Input.touches)

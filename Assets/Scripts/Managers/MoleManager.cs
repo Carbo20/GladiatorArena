@@ -14,6 +14,7 @@ public class MoleManager : MonoBehaviour
     public float timeOfPush;
     private float timeBeingPushed;
     private float pushForce;
+    private bool shield;
 
     /// <summary>
     /// Sound played when the spell explode
@@ -35,6 +36,7 @@ public class MoleManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        shield = false;
         timeAlive = 0;
         isBeingPushed = false;
         timeOfPush = 0.5f;
@@ -109,7 +111,6 @@ public class MoleManager : MonoBehaviour
         transform.Translate(dir * pushForce * Time.deltaTime);
     }
 
-
     public void OnTriggerEnter(Collider collision)
     {
         if (collision.gameObject.tag == "Lava")
@@ -130,10 +131,13 @@ public class MoleManager : MonoBehaviour
                 audioSource.Play();
             }
 
-            isBeingPushed = true;
-            timeBeingPushed = 0;
-            pushForce = spell.Force;
-            pushDirection = spell.direction;
+            if (!shield)
+            {
+                isBeingPushed = true;
+                timeBeingPushed = 0;
+                pushForce = spell.Force;
+                pushDirection = spell.direction;
+            }
         }
         else if (collision.gameObject.tag == "Bumper")
         {
@@ -151,5 +155,10 @@ public class MoleManager : MonoBehaviour
         pushDirection = (transform.position - barrelPos).normalized;
         
         pushForce = (BarrelManager.range - (new Vector2(transform.position.x, transform.position.z) - new Vector2(barrelPos.x, barrelPos.z)).magnitude) * 3;
+    }
+
+    public void ShieldUpdate(bool shieldUpdate)
+    {
+        shield = shieldUpdate;
     }
 }
