@@ -48,8 +48,8 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
 
        
        //listener = new MultiplayerController();
-        const int MinOpponents = 1, MaxOpponents = 2;//placeholder
-        const int GameVariant = 0;
+        //const int MinOpponents = 1, MaxOpponents = 1;//placeholder
+       // const int GameVariant = 0;
        // PlayGamesPlatform.Instance.RealTime.CreateQuickGame(MinOpponents, MaxOpponents,
        //             GameVariant, this);
 
