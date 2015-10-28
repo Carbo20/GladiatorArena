@@ -15,7 +15,7 @@ public class ArenaManager : MonoBehaviour
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        level = new Level0();
+        level = new Level1();
         pieces = new GameObject[level.width, level.height];
         BuildArena();
     }
@@ -30,7 +30,8 @@ public class ArenaManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        elapsedTime += Time.deltaTime;
+        if(!gameManager.introIsPlaying)
+            elapsedTime += Time.deltaTime;
         if (!gameManager.gameOver && currentFallStep < level.GetFallStepCount() &&  level.GetFallTime(currentFallStep) <= elapsedTime)
         {
             TriggerFall(currentFallStep);
