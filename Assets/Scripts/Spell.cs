@@ -33,8 +33,19 @@ public class Spell : MonoBehaviour {
     // Use this for initialization
     void Start () {
         myTransform = transform;
-        prefabExplosion = Resources.Load("Prefabs/ExplosionParticles") as GameObject;
+        BonusManager bonusMan ;
+        bonusMan = gameObject.GetComponent<BonusManager>();
+        if (bonusMan.bonusPickedRandomly == 1)
+        {
+            prefabExplosion = Resources.Load("Prefabs/BigExplosionParticles") as GameObject;
+        }
+        else
+        {
+            prefabExplosion = Resources.Load("Prefabs/ExplosionParticles") as GameObject;
+        }
     }
+
+
 	
 	// Update is called once per frame
 	void Update () {

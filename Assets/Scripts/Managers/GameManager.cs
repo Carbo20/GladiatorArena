@@ -71,8 +71,9 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
             names.Add(go.GetComponent<MoleManager>().Name);
         }
 
+ 
 
-	}
+    }
 
     // Update is called once per frame
     void Update()

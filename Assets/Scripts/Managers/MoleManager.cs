@@ -119,9 +119,18 @@ public class MoleManager : MonoBehaviour
         }
         else if (collision.gameObject.tag == "Spell")
         {
-            // envoyer l'explosion de la boule de feu
             Spell spell;
             spell = collision.gameObject.GetComponent<Spell>();
+
+            BonusManager bonusMan;
+            bonusMan = gameObject.GetComponent<BonusManager>();
+
+            if (bonusMan.bonusPickedRandomly == 1)
+            {
+                spell.Force = 10;
+            }
+
+            // envoyer l'explosion de la boule de feu
             spell.explode();
 
             if (SpellExplosionSound != null)
@@ -139,6 +148,7 @@ public class MoleManager : MonoBehaviour
                 pushDirection = spell.direction;
             }
         }
+
         else if (collision.gameObject.tag == "Bumper")
         {
             isBeingPushed = true;
@@ -146,6 +156,23 @@ public class MoleManager : MonoBehaviour
             pushDirection = (transform.position - collision.gameObject.transform.position).normalized;
             pushForce = 7; //force des bumpers
         }
+
+       
+        else if (collision.gameObject.CompareTag("Bonus"))
+        {
+            //Destroy(collision.gameObject);
+             BonusManager bonusMan;
+             bonusMan = collision.gameObject.GetComponent<BonusManager>();
+            /*  Destroy(bonusMan);*/
+            //collision.gameObject.SetActive(false);
+            //collision.gameObject.GetComponent<MeshRenderer>().material = null;
+            //bonusMan.bonusGo.SetActive(false);
+            // bonusMan.GetComponent<MeshRenderer>().material = null;
+
+            bonusMan.SetInvisible();
+
+        }
+        
     }
 
     public void HitByBarrelForce(Vector3 barrelPos)
