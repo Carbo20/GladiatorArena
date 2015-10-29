@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
     private GameObject nacelle, nacelleFloor;
     private List<Vector3> initPosOnnacelle;
     private List<GameObject> moles;
+    private QuickCutsceneController QCSController;
+    private bool cutScenePlayed;
+    GameObject getReadyImg, goImg;
 
     private Level level;
 
@@ -64,7 +67,12 @@ public class GameManager : MonoBehaviour
         initPosOnnacelle.Add(new Vector3(-2.5f, 30.8f, 2.5f));
         initPosOnnacelle.Add(new Vector3(-2.5f, 30.8f, -2.5f));
         moles = new List<GameObject>();
-
+        QCSController = GameObject.Find("BaseCutscene").GetComponent<QuickCutsceneController>();
+        cutScenePlayed = false;
+        getReadyImg = GameObject.Find("GetReadyImage");
+        goImg = GameObject.Find("GoImage");
+        getReadyImg.SetActive(false);
+        goImg.SetActive(false);
 
         /*create moles */
         for (int i = 0; i < nbPlayers; i++)
@@ -100,6 +108,11 @@ public class GameManager : MonoBehaviour
         {
             PlayIntro();
         }
+        /*else
+        {
+            if (goImg.activeInHierarchy)
+                goImg.SetActive(false);
+        }*/
 
         if(!introIsPlaying && !gameOver)
         {
@@ -111,9 +124,15 @@ public class GameManager : MonoBehaviour
 
     private void PlayIntro()
     {
+        if (!cutScenePlayed)
+        {
+            QCSController.ActivateCutscene();
+            cutScenePlayed = true;
+        }
         switch (introStep)
         {
             case 0:
+                
                 nacelle.transform.position = Vector3.Lerp(new Vector3(0, 30, 0), new Vector3(0, -10, 0), timeElapsed / introStepTimes[introStep]);
                 nacelle.transform.Rotate(Vector3.up, 10);
                 break;
@@ -130,11 +149,28 @@ public class GameManager : MonoBehaviour
                 break;
             case 3:
                 Destroy(nacelle);
+                if (goImg.activeInHierarchy)
+                    goImg.SetActive(false);
                 introIsPlaying = false;
                 timeElapsed = 0;
                 break;
         }
 
+        if (timeElapsed >= 6.65 && timeElapsed < 11f)
+        {
+            if (!getReadyImg.activeInHierarchy)
+                getReadyImg.SetActive(true);
+        }
+        if (timeElapsed >= 11f && timeElapsed < 12.1)
+        {
+            if (getReadyImg.activeInHierarchy)
+                getReadyImg.SetActive(false);
+            if (!goImg.activeInHierarchy)
+                goImg.SetActive(true);
+       }
+       if (timeElapsed >= 11.9)
+           goImg.GetComponent<Image>().color = new Color(goImg.GetComponent<Image>().color.r, goImg.GetComponent<Image>().color.g, goImg.GetComponent<Image>().color.b, goImg.GetComponent<Image>().color.a - Time.deltaTime*4);
+ 
         if (introStep < introStepCount)
         {
             if (timeElapsed >= introStepTimes[introStep])
@@ -142,6 +178,7 @@ public class GameManager : MonoBehaviour
                 introStep++;
             }
         }
+        
     }
 
     private void updateTimetext()
