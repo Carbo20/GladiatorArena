@@ -15,7 +15,7 @@ public class BonusManager : MonoBehaviour {
         bonusGo = GameObject.Find("Bonus");
         bonusGo.SetActive(false);
         bonusGo.GetComponent<MeshRenderer>().material = Resources.Load("Bonus/Bonus" + bonusPickedRandomly) as Material;
-
+       
     }
 
     // Update is called once per frame
@@ -36,8 +36,8 @@ public class BonusManager : MonoBehaviour {
 
     public void SetInvisible()
     {
-        
-        bonusGo.GetComponent<MeshRenderer>().material = null;
-        bonusGo.SetActive(false);
+        Destroy(bonusGo);
+        //bonusGo.GetComponent<MeshRenderer>().material = null;
+        //bonusGo.SetActive(false);
     }
 }
