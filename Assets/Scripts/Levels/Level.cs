@@ -20,6 +20,8 @@ public abstract class Level {
 
     public GameObject Bumper;
     public GameObject Barrel;
+    public GameObject Box;
+    public GameObject Wall, WallRot, WallCorner, WallCornerRot90, WallCornerRotM90, WallCornerRot180;
 
     public Level()
     {
@@ -42,6 +44,13 @@ public abstract class Level {
         obstaclesPositions = new List<Vector3>();
         Bumper = Resources.Load<GameObject>("Prefabs/Bumper");
         Barrel = Resources.Load<GameObject>("Prefabs/Barrel");
+        Box    = Resources.Load<GameObject>("Prefabs/Box");
+        Wall   = Resources.Load<GameObject>("Prefabs/Wall");
+        WallRot = Resources.Load<GameObject>("Prefabs/WallRotate");
+        WallCorner = Resources.Load<GameObject>("Prefabs/WallCorner");
+        WallCornerRot90 = Resources.Load<GameObject>("Prefabs/WallCornerRot90");
+        WallCornerRotM90 = Resources.Load<GameObject>("Prefabs/WallCornerRotM90");
+        WallCornerRot180 = Resources.Load<GameObject>("Prefabs/WallCornerRot180"); 
     }
 
     public void SetDimension(int _width, int _height)

@@ -15,7 +15,7 @@ public class ArenaManager : MonoBehaviour
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
-        level = new Level1();
+        level = new Level0();
         pieces = new GameObject[level.width, level.height];
         BuildArena();
     }
