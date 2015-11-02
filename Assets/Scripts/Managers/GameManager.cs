@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
             timeElapsed += Time.deltaTime;
             checkEndGame();
             updateTimetext();
+            //checkEndBonus();
         }
 	}
 
@@ -164,6 +165,12 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
             updateGameOverPanel(mm);
             gameOver = true;
         }
+    }
+
+    private void checkEndBonus()
+    {
+        //TODO
+
     }
 
     public void QuiButton()

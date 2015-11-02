@@ -160,22 +160,11 @@ public class MoleManager : MonoBehaviour
        
         else if (collision.gameObject.CompareTag("Bonus"))
         {
-            //Destroy(collision.gameObject);
+            
             GameObject bonus;
-             bonus = GameObject.Find("GameManager");
-
-            //BonusManager bonusMan;
+            bonus = GameObject.Find("GameManager");
             bonus.GetComponent<BonusManager>().SetInvisible();
-
-           
-            /*  Destroy(bonusMan);*/
-            //collision.gameObject.SetActive(false);
-            //collision.gameObject.GetComponent<MeshRenderer>().material = null;
-            //bonusMan.bonusGo.SetActive(false);
-            // bonusMan.GetComponent<MeshRenderer>().material = null;
-
-           
-
+            
         }
         
     }

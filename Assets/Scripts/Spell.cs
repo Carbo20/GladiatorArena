@@ -35,7 +35,7 @@ public class Spell : MonoBehaviour {
         myTransform = transform;
         BonusManager bonusMan ;
         bonusMan = gameObject.GetComponent<BonusManager>();
-        if (bonusMan.bonusPickedRandomly == 1)
+        if (bonusMan.bonusPickedRandomly == 1 && bonusMan.bonusOwnedList[bonusMan.bonusPickedRandomly]== true)
         {
             prefabExplosion = Resources.Load("Prefabs/BigExplosionParticles") as GameObject;
         }
