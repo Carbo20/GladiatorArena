@@ -6,7 +6,7 @@ using System;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi.Multiplayer;
 
-public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
+public class GameManager : MonoBehaviour
 {
 
     private int nbPlayers;
@@ -170,38 +170,5 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
         Application.LoadLevel("GameParameterScene");
     }
 
-    public void OnRoomSetupProgress(float percent)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnRoomConnected(bool success)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnLeftRoom()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnParticipantLeft(Participant participant)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnPeersConnected(string[] participantIds)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnPeersDisconnected(string[] participantIds)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data)
-    {
-        throw new NotImplementedException();
-    }
+   
 }
