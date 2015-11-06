@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour, MPLobbyListener
 
     private bool _showLobbyDialog;
     private string _lobbyMessage;
+    private bool connect;
 
     public void SetLobbyStatusMessage(string message)
     {
@@ -19,6 +20,7 @@ public class MainMenu : MonoBehaviour, MPLobbyListener
         // Authenticate localUser for multi network
         
         ready = 0;
+        connect = false;
 
     }
 
@@ -39,16 +41,20 @@ public class MainMenu : MonoBehaviour, MPLobbyListener
 
     public void OnGUI()
     {
-        _lobbyMessage = "Starting a multi-player game...";
-        _showLobbyDialog = true;
-       // MultiplayerController.Instance.mainMenu = this;
-        MultiplayerController.Instance.lobbyListener = this;
-        MultiplayerController.Instance.SignInAndStartMPGame();
-
-        if (_showLobbyDialog)
+        if (!connect)
         {
-            GUI.skin = guiSkin;
-            GUI.Box(new Rect(Screen.width * 0.25f, Screen.height * 0.4f, Screen.width * 0.5f, Screen.height * 0.5f), _lobbyMessage);
+            _lobbyMessage = "Starting a multi-player game...";
+            _showLobbyDialog = true;
+            // MultiplayerController.Instance.mainMenu = this;
+            MultiplayerController.Instance.lobbyListener = this;
+            MultiplayerController.Instance.SignInAndStartMPGame();
+
+            if (_showLobbyDialog)
+            {
+                GUI.skin = guiSkin;
+                GUI.Box(new Rect(Screen.width * 0.25f, Screen.height * 0.4f, Screen.width * 0.5f, Screen.height * 0.5f), _lobbyMessage);
+            }
+            connect = true;
         }
     }
 

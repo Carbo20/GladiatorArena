@@ -11,6 +11,8 @@ public class MultiplayerController : RealTimeMultiplayerListener
     private uint minOpponents = 1;
     private uint maxOpponents = 1;
     private uint gameVariation = 0;
+    private bool activateDone = false;
+    private bool signedInDone = false;
 
     public MPLobbyListener lobbyListener;
     public static MultiplayerController _instance = null;
@@ -31,13 +33,17 @@ public class MultiplayerController : RealTimeMultiplayerListener
         PlayGamesPlatform.DebugLogEnabled = true;
         
         // Activate the Google Play Games platform
-        PlayGamesPlatform.Activate();
+        if (!activateDone)
+        {
+            GooglePlayGames.PlayGamesPlatform.Activate();
+            activateDone = true;
+        }
 
        // SignInAndStartMPGame();
 
     }
 
-   public static MultiplayerController Instance
+   public static MultiplayerController Instance //////////////////////////WHAT THE ACTUAL FUCK
     {
         get
         {
@@ -52,15 +58,21 @@ public class MultiplayerController : RealTimeMultiplayerListener
     // Authenticate localUser for multi network
     public void SignInAndStartMPGame()
     {
-       
-        if (!Social.localUser.authenticated)
+        if (!activateDone)
+        {
+            GooglePlayGames.PlayGamesPlatform.Activate();
+            activateDone = true;
+        }
+
+        if (!Social.localUser.authenticated && !signedInDone)
         {
             Social.localUser.Authenticate((bool success) => {
                 if (success)
                 {
                     Debug.Log("We're signed in! Welcome " + PlayGamesPlatform.Instance.localUser.userName);
                     // We could start our game now
-                   
+
+                    signedInDone = true;
                     Application.LoadLevel("DavidSceneWithNetwork");
                 }
                 else
