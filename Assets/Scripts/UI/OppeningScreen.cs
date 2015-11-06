@@ -22,7 +22,7 @@ public class OppeningScreen : MonoBehaviour {
 
     public void SwitchToOptionScene()
     {
-        //Put the option scene here
+        Application.LoadLevel("GameParameterScene");
     }
 
     public void Quit()
