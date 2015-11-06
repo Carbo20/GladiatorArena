@@ -245,13 +245,42 @@ public class Level0 : Level {
         obstaclesPositions.Add(new Vector3(-height + 2 * 7, obstacles[0].transform.position.y + 0.1f, -width + 2 * 13));
 
         obstacles.Add(Bumper);
-        obstaclesPositions.Add(new Vector3(-height + 2 * 13, obstacles[0].transform.position.y + 0.1f, -width + 2 * 7));
+        obstaclesPositions.Add(new Vector3(-height + 2 * 13, obstacles[1].transform.position.y + 0.1f, -width + 2 * 7));
 
         obstacles.Add(Barrel);
-        obstaclesPositions.Add(new Vector3(-height + 2 * 7, obstacles[0].transform.position.y + 0.1f, -width + 2 * 7));
+        obstaclesPositions.Add(new Vector3(-height + 2 * 7, obstacles[2].transform.position.y + 0.1f, -width + 2 * 7));
 
         obstacles.Add(Barrel);
-        obstaclesPositions.Add(new Vector3(-height + 2 * 13, obstacles[0].transform.position.y+0.1f, -width + 2 * 13));
+        obstaclesPositions.Add(new Vector3(-height + 2 * 13, obstacles[3].transform.position.y+0.1f, -width + 2 * 13));
+
+        obstacles.Add(Box);
+        obstaclesPositions.Add(new Vector3(-height + 2 * 8, obstacles[4].transform.position.y + 0.1f, -width + 2 * 4));
+
+
+        //pour les wall ajouter ou supprimer 0.85 a "x" pour mettre le mur sur un coté ou l'autre de sol
+        //pour les wallRot ajouter ou supprimer 0.85 a "y" pour mettre le mur sur un coté ou l'autre de sol
+        
+
+        obstacles.Add(Wall);
+        obstaclesPositions.Add(new Vector3(-height + 2 * 7 + 0.85f, obstacles[5].transform.position.y + 0.1f, -width + 2 * 7));
+
+        obstacles.Add(Wall);
+        obstaclesPositions.Add(new Vector3(-height + 2 * 7 + 0.85f, obstacles[6].transform.position.y + 0.1f, -width + 2 * 8));
+
+        obstacles.Add(WallCornerRot180);
+        obstaclesPositions.Add(new Vector3(-height + 2 * 7, obstacles[7].transform.position.y + 0.1f, -width + 2 * 9));
+
+        obstacles.Add(WallRot);
+        obstaclesPositions.Add(new Vector3(-height + 2 * 6, obstacles[6].transform.position.y + 0.1f, -width + 2 * 9 + 0.85f));
+
+        obstacles.Add(WallCornerRotM90);
+        obstaclesPositions.Add(new Vector3(-height + 2 * 7, obstacles[7].transform.position.y + 0.1f, -width + 2 * 6));
+
+        obstacles.Add(WallRot);
+        obstaclesPositions.Add(new Vector3(-height + 2 * 6, obstacles[6].transform.position.y + 0.1f, -width + 2 * 6 - 0.85f));
+
+        obstacles.Add(WallCorner);
+        obstaclesPositions.Add(new Vector3(-height + 2 * 5, obstacles[7].transform.position.y + 0.1f, -width + 2 * 6));
 
     }
 }

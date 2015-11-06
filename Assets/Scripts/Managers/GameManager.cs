@@ -3,10 +3,8 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
-using GooglePlayGames;
-using GooglePlayGames.BasicApi.Multiplayer;
 
-public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
+public class GameManager : MonoBehaviour
 {
 
     private int nbPlayers;
@@ -22,8 +20,19 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
     private List<Color> colors;
     private List<string> names;
 
+    /*intro anim*/
+    private int introStep;
+    private int introStepCount;
+    public bool introIsPlaying;
+    private float[] introStepTimes = {7f, 11f, 13f, 17f };
+    private GameObject nacelle, nacelleFloor;
+    private List<Vector3> initPosOnnacelle;
+    private List<GameObject> moles;
+    private QuickCutsceneController QCSController;
+    private bool cutScenePlayed;
+    GameObject getReadyImg, goImg;
+
     private Level level;
-    private RealTimeMultiplayerListener listener;
 
     // Use this for initialization
     void Start () {
@@ -46,12 +55,24 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
         colors.Add(Color.yellow);
         names = new List<string>();
 
-       
-       //listener = new MultiplayerController();
-        //const int MinOpponents = 1, MaxOpponents = 1;//placeholder
-       // const int GameVariant = 0;
-       // PlayGamesPlatform.Instance.RealTime.CreateQuickGame(MinOpponents, MaxOpponents,
-       //             GameVariant, this);
+        /*intro anim*/
+        introStep = 0;
+        introStepCount = 4;
+        introIsPlaying = true;
+        nacelle = GameObject.Find("nacelle");
+        nacelleFloor = GameObject.Find("nacellefloor");
+        initPosOnnacelle = new List<Vector3>();
+        initPosOnnacelle.Add(new Vector3(2.5f, 30.8f, 2.5f));
+        initPosOnnacelle.Add(new Vector3(2.5f, 30.8f, -2.5f));
+        initPosOnnacelle.Add(new Vector3(-2.5f, 30.8f, 2.5f));
+        initPosOnnacelle.Add(new Vector3(-2.5f, 30.8f, -2.5f));
+        moles = new List<GameObject>();
+        QCSController = GameObject.Find("BaseCutscene").GetComponent<QuickCutsceneController>();
+        cutScenePlayed = false;
+        getReadyImg = GameObject.Find("GetReadyImage");
+        goImg = GameObject.Find("GoImage");
+        getReadyImg.SetActive(false);
+        goImg.SetActive(false);
 
         /*create moles */
         for (int i = 0; i < nbPlayers; i++)
@@ -62,28 +83,103 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
                 go.AddComponent<MoleController>();
             }
 
-            go.GetComponent<MoleManager>().SetInitPosition(level.GetInitalPosition(nbPlayers, i));
+            go.GetComponent<MoleManager>().SetInitPosition(initPosOnnacelle[i]);
+
+            go.GetComponent<Rigidbody>().Sleep();
+            //go.GetComponent<MoleManager>().SetInitPosition(level.GetInitalPosition(nbPlayers, i));
             go.GetComponent<MoleManager>().SetLife(lifeAllowed);
             go.GetComponent<MoleManager>().PlayerID = i;
             go.GetComponent<MoleManager>().Name ="Mole " + i;
             go.GetComponent<MeshRenderer>().material = Resources.Load("Materials/Mole" + i) as Material;
 
+            moles.Add(go);
             names.Add(go.GetComponent<MoleManager>().Name);
         }
 
-
+        updateTimetext();
 	}
 
     // Update is called once per frame
     void Update()
     {
-        if(!gameOver)
+        timeElapsed += Time.deltaTime;
+
+        if (introIsPlaying)
         {
-            timeElapsed += Time.deltaTime;
+            PlayIntro();
+        }
+        /*else
+        {
+            if (goImg.activeInHierarchy)
+                goImg.SetActive(false);
+        }*/
+
+        if(!introIsPlaying && !gameOver)
+        {
+            
             checkEndGame();
             updateTimetext();
         }
 	}
+
+    private void PlayIntro()
+    {
+        if (!cutScenePlayed)
+        {
+            QCSController.ActivateCutscene();
+            cutScenePlayed = true;
+        }
+        switch (introStep)
+        {
+            case 0:
+                
+                nacelle.transform.position = Vector3.Lerp(new Vector3(0, 30, 0), new Vector3(0, -10, 0), timeElapsed / introStepTimes[introStep]);
+                nacelle.transform.Rotate(Vector3.up, 10);
+                break;
+            case 1:
+                for (int i = 0; i < nbPlayers; i++)
+                {
+
+                    moles[i].transform.position = Vector3.Lerp(new Vector3(initPosOnnacelle[i].x, 2, initPosOnnacelle[i].z), level.GetInitalPosition(nbPlayers, i), (timeElapsed - introStepTimes[introStep - 1]) / (introStepTimes[introStep] - introStepTimes[introStep - 1]));
+                }
+                nacelle.transform.Rotate(Vector3.up, 10);
+                break;
+            case 2:
+                nacelle.transform.position = Vector3.Lerp(new Vector3(0, -10, 0), new Vector3(0, -15, 0), (timeElapsed - introStepTimes[introStep - 1]) / (introStepTimes[introStep] - introStepTimes[introStep - 1]));
+                break;
+            case 3:
+                Destroy(nacelle);
+                if (goImg.activeInHierarchy)
+                    goImg.SetActive(false);
+                introIsPlaying = false;
+                timeElapsed = 0;
+                break;
+        }
+
+        if (timeElapsed >= 6.65 && timeElapsed < 11f)
+        {
+            if (!getReadyImg.activeInHierarchy)
+                getReadyImg.SetActive(true);
+        }
+        if (timeElapsed >= 11f && timeElapsed < 12.1)
+        {
+            if (getReadyImg.activeInHierarchy)
+                getReadyImg.SetActive(false);
+            if (!goImg.activeInHierarchy)
+                goImg.SetActive(true);
+       }
+       if (timeElapsed >= 11.9)
+           goImg.GetComponent<Image>().color = new Color(goImg.GetComponent<Image>().color.r, goImg.GetComponent<Image>().color.g, goImg.GetComponent<Image>().color.b, goImg.GetComponent<Image>().color.a - Time.deltaTime*4);
+ 
+        if (introStep < introStepCount)
+        {
+            if (timeElapsed >= introStepTimes[introStep])
+            {
+                introStep++;
+            }
+        }
+        
+    }
 
     private void updateTimetext()
     {
@@ -170,38 +266,4 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
         Application.LoadLevel("GameParameterScene");
     }
 
-    public void OnRoomSetupProgress(float percent)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnRoomConnected(bool success)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnLeftRoom()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnParticipantLeft(Participant participant)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnPeersConnected(string[] participantIds)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnPeersDisconnected(string[] participantIds)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data)
-    {
-        throw new NotImplementedException();
-    }
 }

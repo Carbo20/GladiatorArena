@@ -30,7 +30,8 @@ public class ArenaManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        elapsedTime += Time.deltaTime;
+        if(!gameManager.introIsPlaying)
+            elapsedTime += Time.deltaTime;
         if (!gameManager.gameOver && currentFallStep < level.GetFallStepCount() &&  level.GetFallTime(currentFallStep) <= elapsedTime)
         {
             TriggerFall(currentFallStep);
