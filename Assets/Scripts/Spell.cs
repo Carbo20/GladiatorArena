@@ -27,22 +27,35 @@ public class Spell : MonoBehaviour {
     ///     used to store my transform to avoid any unecessary lookup. Saves performance.
     /// </summary>
     public Transform myTransform;
-
+    
     private GameObject prefabExplosion;
 
     // Use this for initialization
     void Start () {
         myTransform = transform;
-        BonusManager bonusMan ;
-        bonusMan = gameObject.GetComponent<BonusManager>();
-        if (bonusMan.bonusPickedRandomly == 1 && bonusMan.bonusOwnedList[bonusMan.bonusPickedRandomly]== true)
+        //BonusManager bonusMan ;bonusMan = gameObject.GetComponent<BonusManager>();
+        
+        GameObject bonus;
+        bonus = GameObject.Find("GameManager");
+        Debug.Log("avant if");
+        if (bonus.GetComponent<BonusManager>().bonusGo != null)
         {
-            prefabExplosion = Resources.Load("Prefabs/BigExplosionParticles") as GameObject;
+            if (bonus.GetComponent<BonusManager>().bonusOwnedList[1] == true)
+            {
+                Debug.Log("dans big explo");
+                prefabExplosion = Resources.Load("Prefabs/BigExplosionParticles") as GameObject;
+            }
+            else
+            {
+                Debug.Log("dans normal explo");
+                prefabExplosion = Resources.Load("Prefabs/ExplosionParticles") as GameObject;
+            }
         }
         else
         {
             prefabExplosion = Resources.Load("Prefabs/ExplosionParticles") as GameObject;
         }
+        
     }
 
 
@@ -82,7 +95,9 @@ public class Spell : MonoBehaviour {
     /// </summary>
     public void explode()
     {
+        Debug.Log("before explode");
         Instantiate(prefabExplosion, myTransform.position, myTransform.rotation);
+        Debug.Log("after explode");
         Destroy(this.gameObject);
     }
 }

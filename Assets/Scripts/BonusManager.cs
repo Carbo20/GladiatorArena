@@ -9,8 +9,12 @@ public class BonusManager : MonoBehaviour {
     public GameObject bonusGo;
     public int bonusPickedRandomly;
     public bool[] bonusOwnedList;
-    int nbBonus;
+    public int nbBonus;
     private float timeElapsed;
+
+    private float stunActiveEngage;
+    private float stunTime;
+    private float expirationBonusTime;
 
     // Use this for initialization
     void Start () {
@@ -18,9 +22,14 @@ public class BonusManager : MonoBehaviour {
         lastPopTime = 0;
         popTime = 6;
         nbBonus  =  5;
+        expirationBonusTime = 5;
+        stunActiveEngage = 4;
+        stunTime = 2;
         bonusOwnedList = new bool [nbBonus] ;
-       
-        bonusPickedRandomly = Random.Range(1, nbBonus);
+        //bonusOwnedList: (0:Stun, 1:BigSpell, 2:InfiniteTir, 3:BoostSpeed, 4:SlowSpeed)
+        //bonusPickedRandomly = Random.Range(0, nbBonus-1);
+        bonusPickedRandomly = 1;
+
         if (bonusGo == null)
         {
             InvokeRepeating("SpawnBonus", popTime, popTime);
@@ -39,7 +48,28 @@ public class BonusManager : MonoBehaviour {
 
     public void SetInvisible()
     {
-        bonusOwnedList[bonusPickedRandomly] = true;
         Destroy(bonusGo);
+        InvokeRepeating("ExpireBonus", expirationBonusTime, 0);
+
+        Debug.Log("bonusPickedRandomly: "+ bonusPickedRandomly);
+        if (bonusPickedRandomly == 0)
+        {
+            //TODO wait stunActiveEngage
+            bonusOwnedList[bonusPickedRandomly] = true;
+        }
+        else
+        {
+            Debug.Log("ajoutListBonusnum:" +bonusPickedRandomly);
+            bonusOwnedList[bonusPickedRandomly] = true;
+        }
+
+    }
+
+    public void ExpireBonus()
+    {
+        for (int i = 0; i < nbBonus; i++)
+        {
+            bonusOwnedList[i] = false;
+        }
     }
 }

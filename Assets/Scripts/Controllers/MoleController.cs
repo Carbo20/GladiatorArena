@@ -48,7 +48,10 @@ public class MoleController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (CanMove())
+        GameObject bonusMan;
+        bonusMan = GameObject.Find("GameManager");
+
+        if (CanMove() && !bonusMan.GetComponent<BonusManager>().bonusOwnedList[0])
             Move();
 
         if (shieldRemainingDuration > 0)
@@ -77,12 +80,31 @@ public class MoleController : MonoBehaviour {
         /* if (dir.sqrMagnitude > 1)
              dir.Normalize();*/
         dir *= Time.deltaTime;
-        transform.Translate(dir * speed);
+
+        GameObject bonusMan;
+        bonusMan = GameObject.Find("GameManager");
+        if (bonusMan.GetComponent<BonusManager>().bonusOwnedList[3] == true)
+        {//boost speed
+           transform.Translate(dir * 2 * speed);
+            Debug.Log("we boost");
+
+        }
+        else if(bonusMan.GetComponent<BonusManager>().bonusOwnedList[4] == true)
+        {//slow speed
+            transform.Translate(dir * speed / 2);
+        }
+        else
+        {//normal speed
+            transform.Translate(dir * speed);
+            Debug.Log("normalspeed");
+        }
+
     }
 
     private bool CanMove()
     {
         
+
         return (!gameManager.GetComponent<GameManager>().gameOver);
     }
 
@@ -90,12 +112,18 @@ public class MoleController : MonoBehaviour {
     {
         if (gameManager.GetComponent<GameManager>().gameOver) return false;
 
-        if (spellRemainingCooldown > 0)
-        {
-            spellRemainingCooldown -= Time.deltaTime;
-            return false; 
-        }
+        GameObject bonus;
+        bonus = GameObject.Find("GameManager");
 
+        if (!bonus.GetComponent<BonusManager>().bonusOwnedList[2])
+        {
+            //Cooldown active if the player doesn't own infinite spell bonus
+            if (spellRemainingCooldown > 0 )
+            {
+                spellRemainingCooldown -= Time.deltaTime;
+                return false;
+            }
+       }
         return true;
     }
 

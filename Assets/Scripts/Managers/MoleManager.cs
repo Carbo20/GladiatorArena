@@ -122,10 +122,10 @@ public class MoleManager : MonoBehaviour
             Spell spell;
             spell = collision.gameObject.GetComponent<Spell>();
 
-            BonusManager bonusMan;
-            bonusMan = gameObject.GetComponent<BonusManager>();
-
-            if (bonusMan.bonusPickedRandomly == 1)
+            GameObject bonusMan;
+            bonusMan = GameObject.Find("GameManager");
+           
+            if (bonusMan.GetComponent<BonusManager>().bonusOwnedList[1] == true)
             {
                 spell.Force = 10;
             }

@@ -6,7 +6,7 @@ using System;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi.Multiplayer;
 
-public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
+public class GameManager : MonoBehaviour
 {
 
     private int nbPlayers;
@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
 
     private Level level;
     private RealTimeMultiplayerListener listener;
+    private float timeOfBonus;
 
     // Use this for initialization
     void Start () {
@@ -32,6 +33,8 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
         lifeAllowed = PlayerPrefs.GetInt("lifeAllowed", 3);
         playerID = PlayerPrefs.GetInt("playerID", 0);
         timeElapsed = 0;
+
+        timeOfBonus = 5;
 
         gameOver = false;
         canvas = GameObject.Find("Canvas");
@@ -83,7 +86,6 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
             timeElapsed += Time.deltaTime;
             checkEndGame();
             updateTimetext();
-            //checkEndBonus();
         }
 	}
 
@@ -166,50 +168,12 @@ public class GameManager : MonoBehaviour, RealTimeMultiplayerListener
             gameOver = true;
         }
     }
-
-    private void checkEndBonus()
-    {
-        //TODO
-
-    }
+    
 
     public void QuiButton()
     {
         Application.LoadLevel("GameParameterScene");
     }
 
-    public void OnRoomSetupProgress(float percent)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnRoomConnected(bool success)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnLeftRoom()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnParticipantLeft(Participant participant)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnPeersConnected(string[] participantIds)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnPeersDisconnected(string[] participantIds)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data)
-    {
-        throw new NotImplementedException();
-    }
+   
 }
