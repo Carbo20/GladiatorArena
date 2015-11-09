@@ -42,7 +42,7 @@ public class MoleController : MonoBehaviour {
         mShield = Resources.Load("Materials/Shield") as Material;
         mNoShield = GetComponent<MeshRenderer>().material;
         gameManager = GameObject.Find("GameManager");
-        moleManager = GetComponent<MoleManager>(); ;
+        moleManager = GetComponent<MoleManager>();
     }
 	
 	// Update is called once per frame

@@ -15,7 +15,7 @@ public class MoleManager : MonoBehaviour
     private float timeBeingPushed;
     private float pushForce;
     private bool shield;
-
+    private Vector3 size;
     /// <summary>
     /// Sound played when the spell explode
     /// </summary>
@@ -60,6 +60,7 @@ public class MoleManager : MonoBehaviour
             else
                 isBeingPushed = false;
         }
+       
     }
 
     public void SetLife(int value)
@@ -129,7 +130,7 @@ public class MoleManager : MonoBehaviour
             {
                 spell.Force = 10;
             }
-
+            
             // envoyer l'explosion de la boule de feu
             spell.explode();
 
@@ -164,6 +165,17 @@ public class MoleManager : MonoBehaviour
             GameObject bonus;
             bonus = GameObject.Find("GameManager");
             bonus.GetComponent<BonusManager>().SetInvisible();
+
+            if (bonus.GetComponent<BonusManager>().bonusOwnedList[5] == true)
+            {
+                Debug.Log("OnGrandit");
+                transform.localScale += new Vector3(1F/2F, 1F/2F, 1F/2F);
+            }
+            if (bonus.GetComponent<BonusManager>().bonusOwnedList[6] == true)
+            {
+                transform.localScale -= new Vector3(1F/2F, 1F/2F, 1F/2F);
+            }
+
             
         }
         
