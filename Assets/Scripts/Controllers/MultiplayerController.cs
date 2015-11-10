@@ -8,42 +8,40 @@ using GooglePlayGames.BasicApi.Multiplayer;
 
 public class MultiplayerController : RealTimeMultiplayerListener
 {
-    private uint minOpponents = 1;
-    private uint maxOpponents = 1;
-    private uint gameVariation = 0;
-    private bool activateDone = false;
-    private bool signedInDone = false;
+    public uint minOpponents = 1;
+    public uint maxOpponents = 3;
+    public uint gameVariation = 0;
+    public bool signedInDone = false;
 
     public MPLobbyListener lobbyListener;
     public static MultiplayerController _instance = null;
+
+    private System.Action<bool> mAuthCallBack;
+    private bool showingWaitingRoom = false;
     public MultiplayerController()
     {
-        //PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
-               /* // enables saving game progress.
-                .EnableSavedGames()
-                // registers a callback to handle game invitations received while the game is not running.
-                .WithInvitationDelegate(< callback method >)
-                // registers a callback for turn based match notifications received while the
-                // game is not running.
-                .WithMatchDelegate(< callback method >)*/
-         //       .Build();
-
-        //PlayGamesPlatform.InitializeInstance(config);
-        //Debug mode
-        PlayGamesPlatform.DebugLogEnabled = true;
-        
-        // Activate the Google Play Games platform
-        if (!activateDone)
-        {
-            GooglePlayGames.PlayGamesPlatform.Activate();
-            activateDone = true;
-        }
-
+        AuthenticationCallBack();
        // SignInAndStartMPGame();
-
     }
 
-   public static MultiplayerController Instance //////////////////////////WHAT THE ACTUAL FUCK
+    public void MultiplayerConfigAndInit()
+    {
+        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+            // registers a callback to handle game invitations received while the game is not running.
+        .WithInvitationDelegate(InvitationReceived)
+            // registers a callback for turn based match notifications received while the
+            // game is not running.
+        .Build();
+
+        //PlayGamesPlatform.InitializeInstance(config);
+        // recommended for debugging:
+        PlayGamesPlatform.DebugLogEnabled = true;
+        // Activate the Google Play Games platform
+        PlayGamesPlatform.Activate();
+    }
+
+
+   public static MultiplayerController Instance //////////////////////////
     {
         get
         {
@@ -58,38 +56,56 @@ public class MultiplayerController : RealTimeMultiplayerListener
     // Authenticate localUser for multi network
     public void SignInAndStartMPGame()
     {
-        if (!activateDone)
-        {
-            GooglePlayGames.PlayGamesPlatform.Activate();
-            activateDone = true;
-        }
+        bool silent = false;
 
-        if (!Social.localUser.authenticated && !signedInDone)
-        {
-            Social.localUser.Authenticate((bool success) => {
-                if (success)
-                {
-                    Debug.Log("We're signed in! Welcome " + PlayGamesPlatform.Instance.localUser.userName);
-                    // We could start our game now
+        //Debug.Log("user auth : " + Social.localUser.authenticated);
 
-                    signedInDone = true;
-                    Application.LoadLevel("DavidSceneWithNetwork");
-                }
-                else
-                {
-                    Debug.Log("Oh... we're not signed in.");
-                } 
-            });
+        if (!signedInDone)
+        {
+            Debug.Log("Started signin in...");
+            PlayGamesPlatform.Instance.Authenticate(mAuthCallBack);
+
+            //////CreateWithInvitationScreen();
 
             //StartMatchMaking();//to do when the user is correctly logged
             //LoadLevel();
-
         }
         else
         {
             Debug.Log("You're already signed in.");
             // We could also start our game now
         }
+    }
+
+    void AuthenticationCallBack()
+    {
+        mAuthCallBack = (bool success) =>
+        {
+            Debug.Log("in auth callback success = " + success);
+            signedInDone = true;
+
+            //signedin = false
+            if (success)
+            {
+                Debug.Log("We're signed in! Welcome " + PlayGamesPlatform.Instance.localUser.userName);
+                signedInDone = true;
+            }
+            else
+            {
+                Debug.Log("Oh... we're not signed in.");
+            }
+        };
+    }
+
+
+    public void InvitationReceived(GooglePlayGames.BasicApi.Multiplayer.Invitation invitation, bool yesOrNo)
+    {
+        Debug.Log("Tou have been invited on a game of MOOOOOOLES");
+    }
+
+    public void CreateWithInvitationScreen()
+    {
+        PlayGamesPlatform.Instance.RealTime.CreateWithInvitationScreen(minOpponents, maxOpponents, gameVariation, this);
     }
 
     void LoadLevel()
@@ -113,7 +129,11 @@ public class MultiplayerController : RealTimeMultiplayerListener
     //Indicates the progress of setting up your room
     public void OnRoomSetupProgress(float percent)
     {
-        ShowMPStatus("We are " + percent + "% done with setup");
+        if (!showingWaitingRoom)
+        {
+            showingWaitingRoom = true;
+            PlayGamesPlatform.Instance.RealTime.ShowWaitingRoomUI();
+        }
     }
 
     //Check when we’ve successfully connected to the room
@@ -121,9 +141,6 @@ public class MultiplayerController : RealTimeMultiplayerListener
     {
         if (success)
         {
-            ShowMPStatus("We are connected to the room! I would probably start our game now.");
-            lobbyListener.HideLobby();
-            lobbyListener = null;
             LoadLevel();
         }
         else

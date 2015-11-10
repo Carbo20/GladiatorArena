@@ -1,5 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+using UnityEngine.SocialPlatforms;
+using UnityEngine.UI;
+using GooglePlayGames.BasicApi.Multiplayer;
 
 public class MainMenu : MonoBehaviour, MPLobbyListener
 {
@@ -9,6 +14,7 @@ public class MainMenu : MonoBehaviour, MPLobbyListener
     private bool _showLobbyDialog;
     private string _lobbyMessage;
     private bool connect;
+    MultiplayerController multiplayerController;
 
     public void SetLobbyStatusMessage(string message)
     {
@@ -18,44 +24,68 @@ public class MainMenu : MonoBehaviour, MPLobbyListener
     void Start ()
     {
         // Authenticate localUser for multi network
-        
         ready = 0;
         connect = false;
 
+        multiplayerController = new MultiplayerController();
+        MultiplayerController.Instance.MultiplayerConfigAndInit();
     }
 
-    //Instructs the Main Menu to stop showing the lobby interface
     public void HideLobby()
     {
-        _lobbyMessage = "";
-        _showLobbyDialog = false;
+
     }
 
     void Update()
     {
-        /*if (ready < 1f)
-            ready += Time.deltaTime;
-        else
-            MultiplayerController.Instance.SignInAndStartMPGame();*/
+        if (connect)
+        {
+            GameObject.Find("Button").GetComponent<Button>().interactable = false;
+        }
     }
 
-    public void OnGUI()
+    public void Connect()
     {
         if (!connect)
         {
-            _lobbyMessage = "Starting a multi-player game...";
-            _showLobbyDialog = true;
-            // MultiplayerController.Instance.mainMenu = this;
-            MultiplayerController.Instance.lobbyListener = this;
+            Debug.Log("tentative de connexion...");
             MultiplayerController.Instance.SignInAndStartMPGame();
 
-            if (_showLobbyDialog)
+
+            if (MultiplayerController.Instance.signedInDone == true)
             {
-                GUI.skin = guiSkin;
-                GUI.Box(new Rect(Screen.width * 0.25f, Screen.height * 0.4f, Screen.width * 0.5f, Screen.height * 0.5f), _lobbyMessage);
+                Debug.Log("Connexion réussie");
+                connect = true;
+                
             }
-            connect = true;
         }
+
+
+        //////if (!connect)
+        //////{
+        //////    // MultiplayerController.Instance.mainMenu = this;
+        //////    MultiplayerController.Instance.lobbyListener = this;
+        //////    MultiplayerController.Instance.SignInAndStartMPGame();
+
+        //////    ////_lobbyMessage = "Starting a multi-player game...";
+        //////    ////_showLobbyDialog = true;
+        //////    ////if (_showLobbyDialog)
+        //////    ////{
+        //////    ////    GUI.skin = guiSkin;
+        //////    ////    GUI.Box(new Rect(Screen.width * 0.25f, Screen.height * 0.4f, Screen.width * 0.5f, Screen.height * 0.5f), _lobbyMessage);
+        //////    ////}
+        //////    connect = true;
+        //////}
+    }
+
+    public void CreateInvitGame()
+    {
+        MultiplayerController.Instance.CreateWithInvitationScreen();
+    }
+
+    public void ShowInvit()
+    {
+        PlayGamesPlatform.Instance.RealTime.AcceptFromInbox(MultiplayerController.Instance);
     }
 
 }
