@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
             //go.GetComponent<MoleManager>().SetInitPosition(level.GetInitalPosition(nbPlayers, i));
             go.GetComponent<MoleManager>().SetLife(lifeAllowed);
             go.GetComponent<MoleManager>().PlayerID = i;
-            go.GetComponent<MoleManager>().Name ="Mole " + i;
+            go.GetComponent<MoleManager>().Name = "Mole " + i;
             go.GetComponent<MeshRenderer>().material = Resources.Load("Materials/Mole" + i) as Material;
 
             moles.Add(go);

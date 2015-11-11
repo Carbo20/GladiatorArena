@@ -175,6 +175,7 @@ public class MoleController : MonoBehaviour {
                             Instantiate(spellPrefab, transform.position + spell.direction*2, transform.rotation);
                             spellRemainingCooldown = spellCooldown;
                             spellLaunched = true;
+                            Debug.Log("Spell");
                         }
                         break;
                 }
