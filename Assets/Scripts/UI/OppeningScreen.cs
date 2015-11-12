@@ -8,6 +8,7 @@ public class OppeningScreen : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         connect = false;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
