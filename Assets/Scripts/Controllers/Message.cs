@@ -66,6 +66,7 @@ public class Message{
                 s += lifeAllowed + "#" + timeOfGame + "#" + nbPlayers;
                 break;
         }
+        msg = Encoding.ASCII.GetBytes(s);
     }
 
     public void ConvertFromByte()

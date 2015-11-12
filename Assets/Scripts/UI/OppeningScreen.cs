@@ -9,6 +9,7 @@ public class OppeningScreen : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         connect = false;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 	
 	// Update is called once per frame

@@ -132,6 +132,8 @@ public class MultiplayerController : RealTimeMultiplayerListener
         bool reliable = true;
 
         msg.GamePrefMessage(lifeAllowed, timeOfGame, NbPlayers);
+
+        Debug.Log(msg.GetByteMessage());
         PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, msg.GetByteMessage());
     }
     //////////////////////////////////////////////////////////////////////
