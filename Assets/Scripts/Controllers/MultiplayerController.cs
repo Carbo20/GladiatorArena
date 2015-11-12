@@ -6,6 +6,10 @@ using UnityEngine.SocialPlatforms;
 using System;
 using GooglePlayGames.BasicApi.Multiplayer;
 
+public enum MessageCode {
+    MessagePlayer, MessageSpell
+};
+
 public class MultiplayerController : RealTimeMultiplayerListener
 {
     public uint minOpponents = 1;
@@ -111,8 +115,23 @@ public class MultiplayerController : RealTimeMultiplayerListener
 
     void LoadLevel()
     {
+        SendPreferences(PlayerPrefs.GetInt("lifeAllowed", 3), PlayerPrefs.GetFloat("timeOfGame", -1));
         Application.LoadLevel("DavidScene");
     }
+
+    /////////////////////////////////////////////////////////////////////////////
+    private void SendPreferences(int lifeAllowed, float timeOfGame)
+    {
+        string constructionMessage;
+        byte[] message; // SPELL#lifeAllowed#timeOfGame
+        bool reliable = true;
+
+        constructionMessage = MessageCode.MessagePlayer + "#" + lifeAllowed + "#" + timeOfGame;
+
+        message = Encoding.ASCII.GetBytes(constructionMessage);
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, message);
+    }
+    //////////////////////////////////////////////////////////////////////
 
     private void StartMatchMaking()
     {

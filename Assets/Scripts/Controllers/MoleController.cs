@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GooglePlayGames;
+using System.Text;
 
 public class MoleController : MonoBehaviour {
 
@@ -49,7 +51,10 @@ public class MoleController : MonoBehaviour {
 	void Update () {
 
         if (CanMove())
+        {
             Move();
+            SendPosition(this.transform.position);
+        }
 
         if (shieldRemainingDuration > 0)
             shieldRemainingDuration -= Time.deltaTime;
@@ -67,6 +72,35 @@ public class MoleController : MonoBehaviour {
             Shield();
 
         spellLaunched = false;
+
+        
+    }
+
+    private void SendPosition(Vector3 Position)
+    {
+        string constructionMessage;
+        byte[] message; // PLAYER#ID#PosX#PosY#PosZ#IsShielded
+        bool reliable = false;
+
+        if (isShielded)
+            reliable = true;
+
+        constructionMessage = MessageCode.MessagePlayer + "#" + moleManager.PlayerID + "#" + Position.x + "#" + Position.y + "#" + Position.z + "#" + isShielded;
+
+        message = Encoding.ASCII.GetBytes(constructionMessage);
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, message);
+    }
+
+    private void SendSpell(Vector3 Position, Vector3 Direction)
+    {
+        string constructionMessage;
+        byte[] message; // SPELL#PosX#PosY#PosZ#DirX#DirY#DirZ
+        bool reliable = true;
+
+        constructionMessage = MessageCode.MessagePlayer + "#" + Position.x + "#" + Position.y + "#" + Position.z + "#" + Direction.x + "#" + Direction.y + "#" + Direction.z;
+
+        message = Encoding.ASCII.GetBytes(constructionMessage);
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, message);
     }
 
     private void Move()
@@ -173,6 +207,7 @@ public class MoleController : MonoBehaviour {
                             spell.direction.y = 0;
                             spell.direction.z = (touch.position - fingerStartPos).normalized.y;
                             Instantiate(spellPrefab, transform.position + spell.direction*2, transform.rotation);
+                            SendSpell(transform.position + spell.direction*2, spell.direction);
                             spellRemainingCooldown = spellCooldown;
                             spellLaunched = true;
                             Debug.Log("Spell");
