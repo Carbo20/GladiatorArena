@@ -158,7 +158,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
         {
             showingWaitingRoom = true;
             Debug.Log("participant id " + PlayGamesPlatform.Instance.RealTime.GetSelf().ParticipantId);
-            PlayerPrefs.SetInt("playerID", int.Parse(PlayGamesPlatform.Instance.RealTime.GetSelf().ParticipantId));
+            PlayerPrefs.SetInt("playerID", PlayGamesPlatform.Instance.RealTime.GetConnectedParticipants().IndexOf(PlayGamesPlatform.Instance.RealTime.GetSelf()));
             PlayGamesPlatform.Instance.RealTime.ShowWaitingRoomUI();
         }
     }
@@ -168,6 +168,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
     {
         if (success)
         {
+            PlayerPrefs.SetInt("playerID", PlayGamesPlatform.Instance.RealTime.GetConnectedParticipants().IndexOf(PlayGamesPlatform.Instance.RealTime.GetSelf()));
             LoadLevel();
         }
         else
