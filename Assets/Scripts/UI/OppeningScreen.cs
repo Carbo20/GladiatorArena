@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Text;
 
 public class OppeningScreen : MonoBehaviour {
 
@@ -8,7 +9,7 @@ public class OppeningScreen : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         connect = false;
-	}
+    }
 	
 	// Update is called once per frame
 	void Update () {

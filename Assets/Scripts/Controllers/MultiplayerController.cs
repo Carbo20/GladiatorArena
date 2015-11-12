@@ -6,7 +6,8 @@ using UnityEngine.SocialPlatforms;
 using System;
 using GooglePlayGames.BasicApi.Multiplayer;
 
-public enum MessageCode {
+public enum MessageCode
+{
     MessagePlayer, MessageSpell
 };
 
