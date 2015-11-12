@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     private QuickCutsceneController QCSController;
     private bool cutScenePlayed;
     GameObject getReadyImg, goImg;
-
+    private GameObject spellPrefab;
     private Level level;
 
     // Use this for initialization
@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
         lifeAllowed = PlayerPrefs.GetInt("lifeAllowed", 3);
         playerID = PlayerPrefs.GetInt("playerID", 0);
         timeElapsed = 0;
-
+        spellPrefab = Resources.Load("Prefabs/Spell") as GameObject;
         gameOver = false;
         canvas = GameObject.Find("Canvas");
         timeTxt = GameObject.Find("TimeText").GetComponent<Text>();
@@ -264,6 +264,13 @@ public class GameManager : MonoBehaviour
     public void QuiButton()
     {
         Application.LoadLevel("GameParameterScene");
+    }
+
+    public void CastSpellReceived(Vector3 pos, Vector3 dir)
+    {
+        GameObject go = Instantiate(spellPrefab);
+        go.GetComponent<Spell>().direction = dir;
+        go.transform.position = pos;
     }
 
 }

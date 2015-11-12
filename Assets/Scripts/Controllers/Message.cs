@@ -16,8 +16,8 @@ public class Message{
     public Vector3 SpellPos, SpellDir;
 
     /*GAMEPREF MESSAGE*/
-    int lifeAllowed;
-    float timeOfGame;
+    public int lifeAllowed, nbPlayers;
+    public float timeOfGame;
 
     public Message()
     {
@@ -41,11 +41,12 @@ public class Message{
         ConvertToByte();
     }
 
-    public void GamePrefMessage(int _lifeAllowed, float _timeOfGame)
+    public void GamePrefMessage(int _lifeAllowed, float _timeOfGame, int _nbPlayers)
     {
         code = MessageCode.GamePref;
         lifeAllowed = _lifeAllowed;
         timeOfGame = _timeOfGame;
+        nbPlayers = _nbPlayers;
         ConvertToByte();
     }
 
@@ -62,7 +63,7 @@ public class Message{
                 s += SpellPos.x + "#" + SpellPos.y + "#" + SpellPos.z + "#" + SpellDir.x + "#" + SpellDir.y + "#" + SpellDir.z;
                 break;
             case MessageCode.GamePref:
-                s += lifeAllowed + "#" + timeOfGame;
+                s += lifeAllowed + "#" + timeOfGame + "#" + nbPlayers;
                 break;
         }
     }
@@ -85,6 +86,7 @@ public class Message{
             case MessageCode.GamePref:
                 lifeAllowed = int.Parse(st[1]);
                 timeOfGame = float.Parse(st[2]);
+                nbPlayers = int.Parse(st[3]);
                 break;
         }
     }

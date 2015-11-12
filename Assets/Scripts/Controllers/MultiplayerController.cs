@@ -24,9 +24,13 @@ public class MultiplayerController : RealTimeMultiplayerListener
 
     private System.Action<bool> mAuthCallBack;
     private bool showingWaitingRoom = false;
+
+    
+
     public MultiplayerController()
     {
         AuthenticationCallBack();
+        
        // SignInAndStartMPGame();
     }
 
@@ -201,5 +205,31 @@ public class MultiplayerController : RealTimeMultiplayerListener
     public void OnRealTimeMessageReceived(bool isReliable, string senderId, byte[] data)
     {
         ShowMPStatus("We have received some gameplay messages from participant ID:" + senderId);
+        Message msg = new Message();
+        msg.SetByteMessage(data);
+        msg.ConvertFromByte();
+
+        Debug.Log("Message type " + msg.code + " received");
+        switch (msg.code)
+        {
+            case MessageCode.GamePref:
+                PlayerPrefs.SetInt("lifeAllowed", msg.lifeAllowed);
+                PlayerPrefs.SetFloat("timeOfGame", msg.timeOfGame);
+                PlayerPrefs.SetInt("nbPlayers", msg.nbPlayers);
+                break;
+            case MessageCode.MessagePlayer:
+                GameObject []moles = GameObject.FindGameObjectsWithTag("Player");
+                foreach (GameObject mole in moles)
+                {
+                    if (msg.PlayerId == mole.GetComponent<MoleManager>().PlayerID)
+                    {
+                        mole.GetComponent<MoleManager>().SetPosition(msg.playerPos, msg.isShielded);
+                    }
+                }
+                break;
+            case MessageCode.MessageSpell:
+                GameObject.Find("GameManager").GetComponent<GameManager>().CastSpellReceived(msg.SpellPos, msg.SpellDir);
+                break;
+        }
     }
 }

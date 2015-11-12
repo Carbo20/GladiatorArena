@@ -161,4 +161,10 @@ public class MoleManager : MonoBehaviour
     {
         shield = shieldUpdate;
     }
+
+    public void SetPosition(Vector3 _pos, bool _ishielded)
+    {
+        transform.position = _pos;
+        shield = _ishielded;
+    }
 }
