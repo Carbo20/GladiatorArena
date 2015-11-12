@@ -105,6 +105,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
 
     public void CreateWithInvitationScreen()
     {
+        maxOpponents = (uint)(PlayerPrefs.GetInt("nbPlayers", 4) - 1);
         PlayGamesPlatform.Instance.RealTime.CreateWithInvitationScreen(minOpponents, maxOpponents, gameVariation, this);
     }
 
