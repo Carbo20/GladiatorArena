@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
-
 public class OppeningScreen : MonoBehaviour {
 
+    private bool connect;
 
 	// Use this for initialization
 	void Start () {
-
-
+        connect = false;
 	}
 	
 	// Update is called once per frame
@@ -21,7 +19,20 @@ public class OppeningScreen : MonoBehaviour {
 
     public void SwitchToPlayScene()
     {
-        Application.LoadLevel("GameParameterScene");
+        if (!connect)
+        {
+            Debug.Log("tentative de connexion...");
+            MultiplayerController.Instance.SignInAndStartMPGame();
+
+
+            if (MultiplayerController.Instance.signedInDone == true)
+            {
+                Debug.Log("Connexion réussie");
+                connect = true;
+                Application.LoadLevel("PlayScene");
+            }
+        }
+        
         
     }
 

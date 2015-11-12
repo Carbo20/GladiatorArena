@@ -127,6 +127,7 @@ public class GameParameterManager : MonoBehaviour {
         PlayerPrefs.SetFloat("timeOfGame", times[timeID]);
         PlayerPrefs.SetInt("lifeAllowed", nbLife);
         PlayerPrefs.SetInt("nbPlayers", nbPlayers);
-        Application.LoadLevel("DavidScene");
+        MultiplayerController.Instance.CreateWithInvitationScreen();
+        
     }
 }
