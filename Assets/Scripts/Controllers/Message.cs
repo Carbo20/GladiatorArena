@@ -15,7 +15,6 @@ public class Message{
     /*SPELL MESSAGE*/
     public Vector3 SpellPos, SpellDir;
 
-<<<<<<< 79cac6a72cea1d72570f68ac72c2dee06894da3b
     /*GAMEPREF MESSAGE*/
     int lifeAllowed;
     float timeOfGame;
@@ -23,10 +22,6 @@ public class Message{
     public Message()
     {
 
-=======
-    public Message()
-    {
->>>>>>> adapting to new script message
     }
 
     public void PlayerMessage(int _playerId, Vector3 _playerPos, bool _isShielded)
