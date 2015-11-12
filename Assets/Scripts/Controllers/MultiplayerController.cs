@@ -8,7 +8,7 @@ using GooglePlayGames.BasicApi.Multiplayer;
 
 public enum MessageCode
 {
-    MessagePlayer, MessageSpell
+    MessagePlayer, MessageSpell, GamePref
 };
 
 public class MultiplayerController : RealTimeMultiplayerListener

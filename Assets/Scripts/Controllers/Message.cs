@@ -15,6 +15,15 @@ public class Message{
     /*SPELL MESSAGE*/
     public Vector3 SpellPos, SpellDir;
 
+    /*GAMEPREF MESSAGE*/
+    int lifeAllowed;
+    float timeOfGame;
+
+    public Message()
+    {
+
+    }
+
     public void PlayerMessage(int _playerId, Vector3 _playerPos, bool _isShielded)
     {
         code = MessageCode.MessagePlayer;
@@ -32,6 +41,14 @@ public class Message{
         ConvertToByte();
     }
 
+    public void GamePrefMessage(int _lifeAllowed, float _timeOfGame)
+    {
+        code = MessageCode.GamePref;
+        lifeAllowed = _lifeAllowed;
+        timeOfGame = _timeOfGame;
+        ConvertToByte();
+    }
+
     private void ConvertToByte()
     {
         string s = code.ToString() + "#";
@@ -43,6 +60,9 @@ public class Message{
                 break;
             case MessageCode.MessageSpell:
                 s += SpellPos.x + "#" + SpellPos.y + "#" + SpellPos.z + "#" + SpellDir.x + "#" + SpellDir.y + "#" + SpellDir.z;
+                break;
+            case MessageCode.GamePref:
+                s += lifeAllowed + "#" + timeOfGame;
                 break;
         }
     }
@@ -62,6 +82,10 @@ public class Message{
                 SpellPos = new Vector3(float.Parse(st[1]), float.Parse(st[2]), float.Parse(st[3]));
                 SpellDir = new Vector3(float.Parse(st[4]), float.Parse(st[5]), float.Parse(st[6]));
                 break;
+            case MessageCode.GamePref:
+                lifeAllowed = int.Parse(st[1]);
+                timeOfGame = float.Parse(st[2]);
+                break;
         }
     }
 
@@ -73,5 +97,10 @@ public class Message{
     public byte[] GetByteMessage()
     {
         return msg;
+    }
+
+    public void SetByteMessage(byte[] _msg)
+    {
+        msg = _msg;
     }
 }
