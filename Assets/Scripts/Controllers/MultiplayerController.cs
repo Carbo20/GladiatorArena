@@ -5,6 +5,7 @@ using GooglePlayGames.BasicApi;
 using UnityEngine.SocialPlatforms;
 using System;
 using GooglePlayGames.BasicApi.Multiplayer;
+using System.Text;
 
 public enum MessageCode
 {
@@ -123,14 +124,11 @@ public class MultiplayerController : RealTimeMultiplayerListener
     /////////////////////////////////////////////////////////////////////////////
     private void SendPreferences(int lifeAllowed, float timeOfGame)
     {
-        string constructionMessage;
-        byte[] message; // SPELL#lifeAllowed#timeOfGame
+        Message msg = new Message(); // GAMEPREF#lifeAllowed#timeOfGame
         bool reliable = true;
 
-        constructionMessage = MessageCode.MessagePlayer + "#" + lifeAllowed + "#" + timeOfGame;
-
-        message = Encoding.ASCII.GetBytes(constructionMessage);
-        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, message);
+        msg.PlayerMessage(ID, POS, SHIELD);
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, msg.GetByteMessage());
     }
     //////////////////////////////////////////////////////////////////////
 

@@ -78,29 +78,23 @@ public class MoleController : MonoBehaviour {
 
     private void SendPosition(Vector3 Position)
     {
-        string constructionMessage;
-        byte[] message; // PLAYER#ID#PosX#PosY#PosZ#IsShielded
+        Message msg = new Message(); // PLAYER#ID#PosX#PosY#PosZ#IsShielded
         bool reliable = false;
 
         if (isShielded)
             reliable = true;
-
-        constructionMessage = MessageCode.MessagePlayer + "#" + moleManager.PlayerID + "#" + Position.x + "#" + Position.y + "#" + Position.z + "#" + isShielded;
-
-        message = Encoding.ASCII.GetBytes(constructionMessage);
-        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, message);
+        
+        msg.PlayerMessage(moleManager.PlayerID, Position, isShielded);
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, msg.GetByteMessage());
     }
 
     private void SendSpell(Vector3 Position, Vector3 Direction)
     {
-        string constructionMessage;
-        byte[] message; // SPELL#PosX#PosY#PosZ#DirX#DirY#DirZ
+        Message msg = new Message(); // SPELL#PosX#PosY#PosZ#DirX#DirY#DirZ
         bool reliable = true;
 
-        constructionMessage = MessageCode.MessagePlayer + "#" + Position.x + "#" + Position.y + "#" + Position.z + "#" + Direction.x + "#" + Direction.y + "#" + Direction.z;
-
-        message = Encoding.ASCII.GetBytes(constructionMessage);
-        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, message);
+        msg.SpellMessage(Position, Direction);
+        PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, msg.GetByteMessage());
     }
 
     private void Move()
