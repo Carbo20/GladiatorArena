@@ -127,7 +127,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
         Message msg = new Message(); // GAMEPREF#lifeAllowed#timeOfGame
         bool reliable = true;
 
-        msg.PlayerMessage(ID, POS, SHIELD);
+        msg.GamePrefMessage(lifeAllowed, timeOfGame);
         PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, msg.GetByteMessage());
     }
     //////////////////////////////////////////////////////////////////////
