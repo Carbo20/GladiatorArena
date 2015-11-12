@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
+using GooglePlayGames;
 
 public class GameManager : MonoBehaviour
 {
@@ -88,7 +89,7 @@ public class GameManager : MonoBehaviour
             go.GetComponent<Rigidbody>().Sleep();
             //go.GetComponent<MoleManager>().SetInitPosition(level.GetInitalPosition(nbPlayers, i));
             go.GetComponent<MoleManager>().SetLife(lifeAllowed);
-            go.GetComponent<MoleManager>().PlayerID = i;
+            go.GetComponent<MoleManager>().PlayerID = int.Parse(PlayGamesPlatform.Instance.RealTime.GetConnectedParticipants()[i].ParticipantId);
             go.GetComponent<MoleManager>().Name = "Mole " + i;
             go.GetComponent<MeshRenderer>().material = Resources.Load("Materials/Mole" + i) as Material;
 

@@ -157,6 +157,8 @@ public class MultiplayerController : RealTimeMultiplayerListener
         if (!showingWaitingRoom)
         {
             showingWaitingRoom = true;
+            Debug.Log("participant id " + PlayGamesPlatform.Instance.RealTime.GetSelf().ParticipantId);
+            PlayerPrefs.SetInt("playerID", int.Parse(PlayGamesPlatform.Instance.RealTime.GetSelf().ParticipantId));
             PlayGamesPlatform.Instance.RealTime.ShowWaitingRoomUI();
         }
     }
