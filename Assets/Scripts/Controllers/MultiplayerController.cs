@@ -110,7 +110,7 @@ public class MultiplayerController : RealTimeMultiplayerListener
 
     void LoadLevel()
     {
-        Application.LoadLevel("DavidSceneWithNetwork");
+        Application.LoadLevel("DavidScene");
     }
 
     private void StartMatchMaking()
