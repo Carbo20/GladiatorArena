@@ -130,4 +130,9 @@ public class GameParameterManager : MonoBehaviour {
         MultiplayerController.Instance.CreateWithInvitationScreen();
         
     }
+
+    public void Back()
+    {
+        Application.LoadLevel("PlayScene");
+    }
 }
