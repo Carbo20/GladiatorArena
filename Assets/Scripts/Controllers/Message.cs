@@ -52,7 +52,7 @@ public class Message{
 
     private void ConvertToByte()
     {
-        string s = code.ToString() + "#";
+        string s = (int)code + "#";
         switch (code)
         {
             case MessageCode.MessagePlayer :
@@ -72,6 +72,7 @@ public class Message{
     public void ConvertFromByte()
     {
         string[] st = ASCIIEncoding.ASCII.GetString(msg).Split('#');
+        Debug.Log(st[0]);
         code = (MessageCode)int.Parse(st[0]);
         switch (code)
         {
