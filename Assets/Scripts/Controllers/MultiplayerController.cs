@@ -121,17 +121,17 @@ public class MultiplayerController : RealTimeMultiplayerListener
 
     void LoadLevel()
     {
-        SendPreferences(PlayerPrefs.GetInt("lifeAllowed", 3), PlayerPrefs.GetFloat("timeOfGame", -1));
+        SendPreferences(PlayerPrefs.GetInt("lifeAllowed", 3), PlayerPrefs.GetFloat("timeOfGame", -1),PlayerPrefs.GetInt("nbPlayers", 4));
         Application.LoadLevel("DavidScene");
     }
 
     /////////////////////////////////////////////////////////////////////////////
-    private void SendPreferences(int lifeAllowed, float timeOfGame)
+    private void SendPreferences(int lifeAllowed, float timeOfGame, int NbPlayers)
     {
         Message msg = new Message(); // GAMEPREF#lifeAllowed#timeOfGame
         bool reliable = true;
 
-        msg.GamePrefMessage(lifeAllowed, timeOfGame);
+        msg.GamePrefMessage(lifeAllowed, timeOfGame, NbPlayers);
         PlayGamesPlatform.Instance.RealTime.SendMessageToAll(reliable, msg.GetByteMessage());
     }
     //////////////////////////////////////////////////////////////////////
